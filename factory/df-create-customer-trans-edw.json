@@ -1,0 +1,9 @@
+{
+	"name": "df-create-customer-trans-edw",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "6d60ea93-ae62-4a46-92a8-c7f44881024b",
+		"tenantId": "28cd8f80-3c44-4b27-81a0-cd2b03a31b8d"
+	}
+}

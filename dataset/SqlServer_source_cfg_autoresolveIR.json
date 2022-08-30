@@ -1,0 +1,54 @@
+{
+	"name": "SqlServer_source_cfg_autoresolveIR",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlServer_autoResolve_IR",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "source",
+				"type": "nvarchar"
+			},
+			{
+				"name": "source_table",
+				"type": "varchar"
+			},
+			{
+				"name": "dest_table",
+				"type": "varchar"
+			},
+			{
+				"name": "source_cols_for_staging",
+				"type": "varchar"
+			},
+			{
+				"name": "watermark_col",
+				"type": "varchar"
+			},
+			{
+				"name": "watermark_val",
+				"type": "varchar"
+			},
+			{
+				"name": "enabled",
+				"type": "bit"
+			},
+			{
+				"name": "load_type",
+				"type": "varchar"
+			},
+			{
+				"name": "status",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "source",
+			"table": "cfg"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
