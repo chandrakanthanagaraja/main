@@ -14,8 +14,17 @@
 		"sql_serv_on_vm_linked_service_connectionString": {
 			"value": ""
 		},
+		"ls_cat_subcat_password": {
+			"value": ""
+		},
 		"datalakestorage_stage_lined_service_properties_typeProperties_url": {
 			"value": "https://stogareacctdp203.dfs.core.windows.net/"
+		},
+		"ls_cat_subcat_properties_typeProperties_host": {
+			"value": "\\\\WINDOWS-04S6H81\\Users\\NadikatCN\\Documents\\Azure\\DP-203-DataEngineer\\Course - Azure Data Factory Real World Project End to End and Use Cases by Amit Navgire\\ProdCatSubCatFolder"
+		},
+		"ls_cat_subcat_properties_typeProperties_userId": {
+			"value": "NadikatCN"
 		},
 		"containerUri": {
 			"value": ""

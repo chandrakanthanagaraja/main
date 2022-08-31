@@ -19,9 +19,21 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'sql_serv_on_vm_linked_service'"
 		},
+		"ls_cat_subcat_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_cat_subcat'"
+		},
 		"datalakestorage_stage_lined_service_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://stogareacctdp203.dfs.core.windows.net/"
+		},
+		"ls_cat_subcat_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "\\\\WINDOWS-04S6H81\\Users\\NadikatCN\\Documents\\Azure\\DP-203-DataEngineer\\Course - Azure Data Factory Real World Project End to End and Use Cases by Amit Navgire\\ProdCatSubCatFolder"
+		},
+		"ls_cat_subcat_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "NadikatCN"
 		}
 	},
 	"variables": {
@@ -361,6 +373,131 @@
 								}
 							]
 						}
+					},
+					{
+						"name": "Loop to copy files",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "get_file_rows",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('get_file_rows').output.value",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Copy csv file from local machine to ADLS Gen 2",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "DelimitedTextSource",
+											"storeSettings": {
+												"type": "FileServerReadSettings",
+												"recursive": true,
+												"enablePartitionDiscovery": false
+											},
+											"formatSettings": {
+												"type": "DelimitedTextReadSettings"
+											}
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "ds_cat_subcat",
+											"type": "DatasetReference",
+											"parameters": {
+												"csv_filename": {
+													"value": "@item().source_table",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DataSet_cfg_datalake_csv",
+											"type": "DatasetReference",
+											"parameters": {
+												"filename": {
+													"value": "@item().dest_table",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								},
+								{
+									"name": "update cft status col - csv input",
+									"type": "Lookup",
+									"dependsOn": [
+										{
+											"activity": "Copy csv file from local machine to ADLS Gen 2",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "SqlServerSource",
+											"sqlReaderQuery": "\nupdate source.cfg set status = 'success' where dest_table = '@{item().dest_table}';\n\nselect 1;",
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"dataset": {
+											"referenceName": "dataset_cfg",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									}
+								}
+							]
+						}
 					}
 				],
 				"policy": {
@@ -372,6 +509,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/dataset_cfg')]",
+				"[concat(variables('factoryId'), '/datasets/ds_cat_subcat')]",
 				"[concat(variables('factoryId'), '/datasets/DataSet_cfg_datalake_csv')]",
 				"[concat(variables('factoryId'), '/dataflows/update_watermark_value')]"
 			]
@@ -672,6 +810,65 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DataSet_cfg_datalake_csv')]",
 				"[concat(variables('factoryId'), '/datasets/SqlServer_source_cfg_autoresolveIR')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_cat_subcat')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FileServer",
+				"typeProperties": {
+					"host": "[parameters('ls_cat_subcat_properties_typeProperties_host')]",
+					"userId": "[parameters('ls_cat_subcat_properties_typeProperties_userId')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ls_cat_subcat_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "self-hosted-integration-runtime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/self-hosted-integration-runtime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_cat_subcat')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_cat_subcat",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"csv_filename": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "FileServerLocation",
+						"fileName": {
+							"value": "@dataset().csv_filename",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_cat_subcat')]"
 			]
 		}
 	]
