@@ -29,6 +29,7 @@
 					},
 					"sink": {
 						"type": "SqlServerSink",
+						"preCopyScript": "\ntruncate table stage.dim_customer;",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false
 					},
@@ -146,6 +147,7 @@
 					},
 					"sink": {
 						"type": "SqlServerSink",
+						"preCopyScript": "truncate table stage.dim_product_cat_subcat;",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false
 					},
