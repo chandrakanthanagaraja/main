@@ -34,7 +34,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> DataFromTransactionCSVFile",
-				"DataFromTransactionCSVFile aggregate(groupBy({} = ERROR_FUNCTION(''))) ~> GroupByStoreType"
+				"DataFromTransactionCSVFile aggregate(groupBy(Store_type)) ~> GroupByStoreType"
 			]
 		}
 	}
