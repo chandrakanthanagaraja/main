@@ -1,0 +1,7 @@
+{
+	"name": "pl_load_dim_fact_tables",
+	"properties": {
+		"description": "Source: ADLS \nDestination: SQL dim and fact tables",
+		"annotations": []
+	}
+}
