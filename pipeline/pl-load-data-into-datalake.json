@@ -394,7 +394,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"csv_filename": {
-											"value": "@activity('get_file_rows').output.value",
+											"value": "@item().source_table",
 											"type": "Expression"
 										}
 									}
@@ -405,7 +405,10 @@
 									"referenceName": "DataSet_cfg_datalake_csv",
 									"type": "DatasetReference",
 									"parameters": {
-										"filename": "filename_notset"
+										"filename": {
+											"value": "@item().dest_table",
+											"type": "Expression"
+										}
 									}
 								}
 							]
