@@ -1,0 +1,30 @@
+{
+	"name": "ds_cat_subcat",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_cat_subcat",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"csv_filename": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "FileServerLocation",
+				"fileName": {
+					"value": "@dataset().csv_filename",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
