@@ -904,6 +904,7 @@
 							},
 							"sink": {
 								"type": "SqlServerSink",
+								"preCopyScript": "\ntruncate table stage.dim_customer;",
 								"writeBehavior": "insert",
 								"sqlWriterUseTableLock": false
 							},
@@ -995,6 +996,113 @@
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "Copy prod cat and subcat",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"preCopyScript": "truncate table stage.dim_product_cat_subcat;",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "prod_cat_code",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "product_cat_code",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "prod_cat",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "product_category",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "prod_sub_cat_code",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "product_subcat_code",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "prod_subcat",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "product_subcategory",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DataSet_cfg_datalake_csv",
+								"type": "DatasetReference",
+								"parameters": {
+									"filename": "prod_cat_sub_cat.csv"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_stage_prod_cat_subcat",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					}
 				],
 				"policy": {
@@ -1005,7 +1113,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DataSet_cfg_datalake_csv')]",
-				"[concat(variables('factoryId'), '/datasets/SqlServerTable1')]"
+				"[concat(variables('factoryId'), '/datasets/SqlServerTable1')]",
+				"[concat(variables('factoryId'), '/datasets/ds_stage_prod_cat_subcat')]"
 			]
 		},
 		{
@@ -1050,6 +1159,51 @@
 				"typeProperties": {
 					"schema": "stage",
 					"table": "dim_customer"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/sql_serv_on_vm_linked_service')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_stage_prod_cat_subcat')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "sql_serv_on_vm_linked_service",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "prod_cat_subcat_key",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "product_cat_code",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "product_category",
+						"type": "varchar"
+					},
+					{
+						"name": "product_subcat_code",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "product_subcategory",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "stage",
+					"table": "dim_product_cat_subcat"
 				}
 			},
 			"dependsOn": [
