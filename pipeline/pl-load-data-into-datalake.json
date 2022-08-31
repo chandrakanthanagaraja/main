@@ -323,6 +323,26 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "Loop to copy files",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "get_file_rows",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('get_file_rows').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true
+				}
 			}
 		],
 		"annotations": [],
