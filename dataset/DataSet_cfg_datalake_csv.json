@@ -8,7 +8,7 @@
 		"parameters": {
 			"filename": {
 				"type": "string",
-				"defaultValue": "filename_notset"
+				"defaultValue": "transaction.csv"
 			}
 		},
 		"annotations": [],
