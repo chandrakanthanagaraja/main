@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "ds_transactionCSV",
+						"referenceName": "DataSet_cfg_datalake_csv",
 						"type": "DatasetReference"
 					},
 					"name": "DataFromTransactionCSVFile"
@@ -20,16 +20,16 @@
 			],
 			"scriptLines": [
 				"source(output(",
-				"          Column_1 as string,",
-				"          Column_2 as string,",
-				"          Column_3 as string,",
-				"          Column_4 as string,",
-				"          Column_5 as string,",
-				"          Column_6 as string,",
-				"          Column_7 as string,",
-				"          Column_8 as string,",
-				"          Column_9 as string,",
-				"          Column_10 as string",
+				"          transaction_id as string,",
+				"          cust_id as string,",
+				"          tran_date as string,",
+				"          prod_subcat_code as string,",
+				"          prod_cat_code as string,",
+				"          Qty as string,",
+				"          Rate as string,",
+				"          Tax as string,",
+				"          total_amt as string,",
+				"          Store_type as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
