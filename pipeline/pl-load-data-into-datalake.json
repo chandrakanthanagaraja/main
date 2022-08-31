@@ -311,7 +311,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "SqlServerSource",
-									"sqlReaderQuery": "\nupdate source.cfg set status = 'success';\nselect 1\n",
+									"sqlReaderQuery": "\nupdate source.cfg set status = 'success' where dest_table = '@{item().dest_table}';\nselect 1;\n",
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
