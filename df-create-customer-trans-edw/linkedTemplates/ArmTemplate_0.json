@@ -442,6 +442,68 @@
 											"value": "@bool(equals(item().load_type, 'incremental'))",
 											"type": "Expression"
 										},
+										"ifFalseActivities": [
+											{
+												"name": "Full data copy",
+												"type": "Copy",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"source": {
+														"type": "SqlServerSource",
+														"sqlReaderQuery": "\r\nselect * from @{item().source_table};",
+														"queryTimeout": "02:00:00",
+														"partitionOption": "None"
+													},
+													"sink": {
+														"type": "DelimitedTextSink",
+														"storeSettings": {
+															"type": "AzureBlobFSWriteSettings"
+														},
+														"formatSettings": {
+															"type": "DelimitedTextWriteSettings",
+															"quoteAllText": true,
+															"fileExtension": ".txt"
+														}
+													},
+													"enableStaging": false,
+													"translator": {
+														"type": "TabularTranslator",
+														"typeConversion": true,
+														"typeConversionSettings": {
+															"allowDataTruncation": true,
+															"treatBooleanAsNumber": false
+														}
+													}
+												},
+												"inputs": [
+													{
+														"referenceName": "dataset_cfg",
+														"type": "DatasetReference",
+														"parameters": {}
+													}
+												],
+												"outputs": [
+													{
+														"referenceName": "DataSet_cfg_datalake_csv",
+														"type": "DatasetReference",
+														"parameters": {
+															"filename": {
+																"value": "@{item().dest_table}",
+																"type": "Expression"
+															}
+														}
+													}
+												]
+											}
+										],
 										"ifTrueActivities": [
 											{
 												"name": "copy_sqldb_type_data",
@@ -560,6 +622,39 @@
 												}
 											}
 										]
+									}
+								},
+								{
+									"name": "update status",
+									"type": "Lookup",
+									"dependsOn": [
+										{
+											"activity": "If Condition1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "SqlServerSource",
+											"sqlReaderQuery": "\nupdate source.cfg set status = 'success' where dest_table = '@{item().dest_table}';\nselect 1;\n",
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"dataset": {
+											"referenceName": "dataset_cfg",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
 									}
 								}
 							]
