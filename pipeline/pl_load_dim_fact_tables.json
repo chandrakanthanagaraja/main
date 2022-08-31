@@ -241,7 +241,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow1",
+						"referenceName": "DataFlow_LoadDimStore",
 						"type": "DataFlowReference",
 						"datasetParameters": {
 							"DataFromTransactionCSVFile": {
