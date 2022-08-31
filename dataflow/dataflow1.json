@@ -1,0 +1,29 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DataSet_cfg_datalake_csv",
+						"type": "DatasetReference"
+					},
+					"name": "DataFromTransactionCSVFile"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "GroupByStoreType"
+				}
+			],
+			"scriptLines": [
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> DataFromTransactionCSVFile",
+				"DataFromTransactionCSVFile aggregate() ~> GroupByStoreType"
+			]
+		}
+	}
+}

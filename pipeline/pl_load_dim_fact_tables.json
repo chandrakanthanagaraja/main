@@ -226,6 +226,42 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "Data Flow to Load Stores into DimStore",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dataflow1",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"DataFromTransactionCSVFile": {
+								"filename": "transaction.csv"
+							}
+						},
+						"linkedServiceParameters": {
+							"DataFromTransactionCSVFile": {
+								"schemaLinkedService": {
+									"filename": "transaction.csv"
+								}
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
 			}
 		],
 		"annotations": []
