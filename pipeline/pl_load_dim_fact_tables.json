@@ -245,13 +245,13 @@
 						"type": "DataFlowReference",
 						"datasetParameters": {
 							"DataFromTransactionCSVFile": {
-								"filename": "transaction.csv"
+								"csv_filename": "transaction.csv"
 							}
 						},
 						"linkedServiceParameters": {
 							"DataFromTransactionCSVFile": {
 								"schemaLinkedService": {
-									"filename": "transaction.csv"
+									"csv_filename": "transaction.csv"
 								}
 							}
 						}
