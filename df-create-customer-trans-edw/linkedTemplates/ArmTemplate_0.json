@@ -801,7 +801,7 @@
 											"type": "DatasetReference",
 											"parameters": {
 												"csv_filename": {
-													"value": "@item().source_table",
+													"value": "@{item().source_table}",
 													"type": "Expression"
 												}
 											}
@@ -813,7 +813,7 @@
 											"type": "DatasetReference",
 											"parameters": {
 												"filename": {
-													"value": "@item().dest_table",
+													"value": "@{item().dest_table}",
 													"type": "Expression"
 												}
 											}
