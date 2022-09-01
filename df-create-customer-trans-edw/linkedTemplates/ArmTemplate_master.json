@@ -15,13 +15,13 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'datalakestorage_stage_lined_service'"
 		},
-		"sql_serv_on_vm_linked_service_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'sql_serv_on_vm_linked_service'"
-		},
 		"ls_cat_subcat_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_cat_subcat'"
+		},
+		"sql_serv_on_vm_linked_service_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'sql_serv_on_vm_linked_service'"
 		},
 		"datalakestorage_stage_lined_service_properties_typeProperties_url": {
 			"type": "string",
@@ -68,11 +68,11 @@
 					"datalakestorage_stage_lined_service_accountKey": {
 						"value": "[parameters('datalakestorage_stage_lined_service_accountKey')]"
 					},
-					"sql_serv_on_vm_linked_service_connectionString": {
-						"value": "[parameters('sql_serv_on_vm_linked_service_connectionString')]"
-					},
 					"ls_cat_subcat_password": {
 						"value": "[parameters('ls_cat_subcat_password')]"
+					},
+					"sql_serv_on_vm_linked_service_connectionString": {
+						"value": "[parameters('sql_serv_on_vm_linked_service_connectionString')]"
 					},
 					"datalakestorage_stage_lined_service_properties_typeProperties_url": {
 						"value": "[parameters('datalakestorage_stage_lined_service_properties_typeProperties_url')]"
@@ -86,26 +86,6 @@
 				}
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "df-create-customer-trans-edw_ArmTemplate_1",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2018-02-01",
-			"properties": {
-				"mode": "incremental",
-				"templateLink": {
-					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"factoryName": {
-						"value": "[parameters('factoryName')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'df-create-customer-trans-edw_ArmTemplate_0')]"
-			]
 		}
 	]
 }

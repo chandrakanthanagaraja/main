@@ -15,13 +15,13 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'datalakestorage_stage_lined_service'"
 		},
-		"sql_serv_on_vm_linked_service_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'sql_serv_on_vm_linked_service'"
-		},
 		"ls_cat_subcat_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_cat_subcat'"
+		},
+		"sql_serv_on_vm_linked_service_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'sql_serv_on_vm_linked_service'"
 		},
 		"datalakestorage_stage_lined_service_properties_typeProperties_url": {
 			"type": "string",
@@ -218,80 +218,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/sql_serv_on_vm_linked_service')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "SqlServer",
-				"typeProperties": {
-					"connectionString": "[parameters('sql_serv_on_vm_linked_service_connectionString')]"
-				},
-				"connectVia": {
-					"referenceName": "self-hosted-integration-runtime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/self-hosted-integration-runtime')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_cat_subcat')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "FileServer",
-				"typeProperties": {
-					"host": "[parameters('ls_cat_subcat_properties_typeProperties_host')]",
-					"userId": "[parameters('ls_cat_subcat_properties_typeProperties_userId')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('ls_cat_subcat_password')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "self-hosted-integration-runtime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/self-hosted-integration-runtime')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_dimstore')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlServer_autoResolve_IR",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [
-					{
-						"name": "store_key",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "store_type",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "stage",
-					"table": "dim_store"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SqlServer_autoResolve_IR')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/ds_dimcustomer')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -333,51 +259,6 @@
 				"typeProperties": {
 					"schema": "stage",
 					"table": "dim_customer"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SqlServer_autoResolve_IR')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_dimprodcatsubcat')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SqlServer_autoResolve_IR",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [
-					{
-						"name": "prod_cat_subcat_key",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "product_cat_code",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "product_category",
-						"type": "varchar"
-					},
-					{
-						"name": "product_subcat_code",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "product_subcategory",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "stage",
-					"table": "dim_product_cat_subcat"
 				}
 			},
 			"dependsOn": [
@@ -552,6 +433,82 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_dimprodcatsubcat')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServer_autoResolve_IR",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "prod_cat_subcat_key",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "product_cat_code",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "product_category",
+						"type": "varchar"
+					},
+					{
+						"name": "product_subcat_code",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "product_subcategory",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "stage",
+					"table": "dim_product_cat_subcat"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlServer_autoResolve_IR')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_dimstore')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServer_autoResolve_IR",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "store_key",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "store_type",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "stage",
+					"table": "dim_store"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlServer_autoResolve_IR')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_facttable')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -619,6 +576,97 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ls_cat_subcat')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FileServer",
+				"typeProperties": {
+					"host": "[parameters('ls_cat_subcat_properties_typeProperties_host')]",
+					"userId": "[parameters('ls_cat_subcat_properties_typeProperties_userId')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ls_cat_subcat_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "self-hosted-integration-runtime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/self-hosted-integration-runtime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/sql_serv_on_vm_linked_service')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('sql_serv_on_vm_linked_service_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "self-hosted-integration-runtime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/self-hosted-integration-runtime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "sql_serv_on_vm_linked_service",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "customer_key",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "customer_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "customer_name",
+						"type": "varchar"
+					},
+					{
+						"name": "DOB",
+						"type": "varchar"
+					},
+					{
+						"name": "city_code",
+						"type": "varchar"
+					},
+					{
+						"name": "gender",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "stage",
+					"table": "dim_customer"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/sql_serv_on_vm_linked_service')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/dataset_cfg')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -677,91 +725,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/update_watermark_value')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DataSet_cfg_datalake_csv",
-								"type": "DatasetReference"
-							},
-							"name": "source1"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "SqlServer_source_cfg_autoresolveIR",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "aggregate1"
-						},
-						{
-							"name": "derivedColumn1"
-						},
-						{
-							"name": "alterRow1"
-						}
-					],
-					"scriptLines": [
-						"parameters{",
-						"     file_name as string,",
-						"     watermark_field as string,",
-						"     source_data_date_format as string",
-						"}",
-						"source(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> source1",
-						"source1 aggregate(max_date = iif(toString($file_name) == 'customer.csv',\r",
-						"    max(toTimestamp(toString(byName($watermark_field)), 'dd-MM-yyyy HH:mm')),\r",
-						"    max(toTimestamp(byName($watermark_field), 'dd-MM-yyyy'))\r",
-						")) ~> aggregate1",
-						"aggregate1 derive(table_name = $file_name) ~> derivedColumn1",
-						"derivedColumn1 alterRow(updateIf(isNull(max_date)==false())) ~> alterRow1",
-						"alterRow1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          source as string,",
-						"          source_table as string,",
-						"          dest_table as string,",
-						"          source_cols_for_staging as string,",
-						"          watermark_col as string,",
-						"          watermark_val as string,",
-						"          enabled as boolean,",
-						"          load_type as string,",
-						"          status as string",
-						"     ),",
-						"     deletable:false,",
-						"     insertable:false,",
-						"     updateable:true,",
-						"     upsertable:false,",
-						"     keys:['dest_table'],",
-						"     skipKeyWrites:true,",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     mapColumn(",
-						"          dest_table = table_name,",
-						"          watermark_val = max_date",
-						"     )) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DataSet_cfg_datalake_csv')]",
-				"[concat(variables('factoryId'), '/datasets/SqlServer_source_cfg_autoresolveIR')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/ds_cat_subcat')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -794,54 +757,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_cat_subcat')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SqlServerTable1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "sql_serv_on_vm_linked_service",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [
-					{
-						"name": "customer_key",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "customer_id",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "customer_name",
-						"type": "varchar"
-					},
-					{
-						"name": "DOB",
-						"type": "varchar"
-					},
-					{
-						"name": "city_code",
-						"type": "varchar"
-					},
-					{
-						"name": "gender",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "stage",
-					"table": "dim_customer"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/sql_serv_on_vm_linked_service')]"
 			]
 		},
 		{
@@ -887,100 +802,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/sql_serv_on_vm_linked_service')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DataFlow_LoadDimStore')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DataSet_cfg_datalake_csv",
-								"type": "DatasetReference"
-							},
-							"name": "DataFromTransactionCSVFile"
-						},
-						{
-							"dataset": {
-								"referenceName": "ds_dimstore",
-								"type": "DatasetReference"
-							},
-							"name": "SourceDimStore"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "ds_dimstore",
-								"type": "DatasetReference"
-							},
-							"name": "InsertIntoDimStore"
-						}
-					],
-					"transformations": [
-						{
-							"name": "GroupByStoreType"
-						},
-						{
-							"name": "GetStoresNotInDimStore"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          transaction_id as string,",
-						"          cust_id as string,",
-						"          tran_date as string,",
-						"          prod_subcat_code as string,",
-						"          prod_cat_code as string,",
-						"          Qty as string,",
-						"          Rate as string,",
-						"          Tax as string,",
-						"          total_amt as string,",
-						"          Store_type as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> DataFromTransactionCSVFile",
-						"source(output(",
-						"          store_key as integer,",
-						"          store_type as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> SourceDimStore",
-						"DataFromTransactionCSVFile aggregate(groupBy(Store_type),",
-						"     count = count(transaction_id)) ~> GroupByStoreType",
-						"GroupByStoreType, SourceDimStore exists(GroupByStoreType@Store_type == SourceDimStore@store_type,",
-						"     negate:true,",
-						"     broadcast: 'auto')~> GetStoresNotInDimStore",
-						"GetStoresNotInDimStore sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          store_key as integer,",
-						"          store_type as string",
-						"     ),",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     format: 'table',",
-						"     preSQLs:['\\ndelete from [stage].[dim_store];'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     mapColumn(",
-						"          store_type = Store_type",
-						"     )) ~> InsertIntoDimStore"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DataSet_cfg_datalake_csv')]",
-				"[concat(variables('factoryId'), '/datasets/ds_dimstore')]"
 			]
 		},
 		{
@@ -1210,477 +1031,182 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pl-load-data-into-datalake')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
+			"name": "[concat(parameters('factoryName'), '/DataFlow_LoadDimStore')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"description": "move data from various source into azure data lake gen 2 - use incremental load.",
-				"activities": [
-					{
-						"name": "get-cfg-records",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [
-							{
-								"name": "source_cfg",
-								"value": "source.cfg table"
-							}
-						],
-						"typeProperties": {
-							"source": {
-								"type": "SqlServerSource",
-								"sqlReaderQuery": "select * from source.cfg where enabled = 1",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
 							"dataset": {
-								"referenceName": "dataset_cfg",
-								"type": "DatasetReference",
-								"parameters": {}
+								"referenceName": "DataSet_cfg_datalake_csv",
+								"type": "DatasetReference"
 							},
-							"firstRowOnly": false
-						}
-					},
-					{
-						"name": "get_sqldb_rows",
-						"description": "get only the sqldb table type records",
-						"type": "Filter",
-						"dependsOn": [
-							{
-								"activity": "get-cfg-records",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('get-cfg-records').output.value",
-								"type": "Expression"
+							"name": "DataFromTransactionCSVFile"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_dimstore",
+								"type": "DatasetReference"
 							},
-							"condition": {
-								"value": "@equals(item().source, 'SQLDB')",
-								"type": "Expression"
-							}
+							"name": "SourceDimStore"
 						}
-					},
-					{
-						"name": "get_file_rows",
-						"description": "get only the file type records",
-						"type": "Filter",
-						"dependsOn": [
-							{
-								"activity": "get-cfg-records",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('get-cfg-records').output.value",
-								"type": "Expression"
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_dimstore",
+								"type": "DatasetReference"
 							},
-							"condition": {
-								"value": "@equals(item().source, 'File')",
-								"type": "Expression"
-							}
+							"name": "InsertIntoDimStore"
 						}
-					},
-					{
-						"name": "foreach_sqldb_rec",
-						"description": "for each sqldb type record",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "get_sqldb_rows",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('get_sqldb_rows').output.value",
-								"type": "Expression"
-							},
-							"activities": [
-								{
-									"name": "If Condition1",
-									"type": "IfCondition",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"expression": {
-											"value": "@bool(equals(item().load_type, 'incremental'))",
-											"type": "Expression"
-										},
-										"ifFalseActivities": [
-											{
-												"name": "Full data copy",
-												"type": "Copy",
-												"dependsOn": [],
-												"policy": {
-													"timeout": "0.12:00:00",
-													"retry": 0,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"source": {
-														"type": "SqlServerSource",
-														"sqlReaderQuery": "\r\nselect * from @{item().source_table};",
-														"queryTimeout": "02:00:00",
-														"partitionOption": "None"
-													},
-													"sink": {
-														"type": "DelimitedTextSink",
-														"storeSettings": {
-															"type": "AzureBlobFSWriteSettings"
-														},
-														"formatSettings": {
-															"type": "DelimitedTextWriteSettings",
-															"quoteAllText": true,
-															"fileExtension": ".txt"
-														}
-													},
-													"enableStaging": false,
-													"translator": {
-														"type": "TabularTranslator",
-														"typeConversion": true,
-														"typeConversionSettings": {
-															"allowDataTruncation": true,
-															"treatBooleanAsNumber": false
-														}
-													}
-												},
-												"inputs": [
-													{
-														"referenceName": "dataset_cfg",
-														"type": "DatasetReference",
-														"parameters": {}
-													}
-												],
-												"outputs": [
-													{
-														"referenceName": "DataSet_cfg_datalake_csv",
-														"type": "DatasetReference",
-														"parameters": {
-															"filename": {
-																"value": "@{item().dest_table}",
-																"type": "Expression"
-															}
-														}
-													}
-												]
-											}
-										],
-										"ifTrueActivities": [
-											{
-												"name": "copy_sqldb_type_data",
-												"description": "copy sqldb type data from source i.e. sql server to sink i.e. data lake gen 2",
-												"type": "Copy",
-												"dependsOn": [],
-												"policy": {
-													"timeout": "0.12:00:00",
-													"retry": 0,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"source": {
-														"type": "SqlServerSource",
-														"sqlReaderQuery": {
-															"value": "select * from @{item().source_table} where convert(datetime, @{item().watermark_col}, 105) > convert(datetime, '@{item().watermark_val}')",
-															"type": "Expression"
-														},
-														"queryTimeout": "02:00:00",
-														"partitionOption": "None"
-													},
-													"sink": {
-														"type": "DelimitedTextSink",
-														"storeSettings": {
-															"type": "AzureBlobFSWriteSettings"
-														},
-														"formatSettings": {
-															"type": "DelimitedTextWriteSettings",
-															"quoteAllText": true,
-															"fileExtension": ".txt"
-														}
-													},
-													"enableStaging": false,
-													"translator": {
-														"type": "TabularTranslator",
-														"typeConversion": true,
-														"typeConversionSettings": {
-															"allowDataTruncation": true,
-															"treatBooleanAsNumber": false
-														}
-													}
-												},
-												"inputs": [
-													{
-														"referenceName": "dataset_cfg",
-														"type": "DatasetReference",
-														"parameters": {}
-													}
-												],
-												"outputs": [
-													{
-														"referenceName": "DataSet_cfg_datalake_csv",
-														"type": "DatasetReference",
-														"parameters": {
-															"filename": "@{item().dest_table}"
-														}
-													}
-												]
-											},
-											{
-												"name": "dataflow_update_watermark_val",
-												"type": "ExecuteDataFlow",
-												"dependsOn": [
-													{
-														"activity": "copy_sqldb_type_data",
-														"dependencyConditions": [
-															"Succeeded"
-														]
-													}
-												],
-												"policy": {
-													"timeout": "0.12:00:00",
-													"retry": 0,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"dataflow": {
-														"referenceName": "update_watermark_value",
-														"type": "DataFlowReference",
-														"parameters": {
-															"file_name": {
-																"value": "'@{item().dest_table}'",
-																"type": "Expression"
-															},
-															"watermark_field": {
-																"value": "'@{item().watermark_col}'",
-																"type": "Expression"
-															},
-															"source_data_date_format": {
-																"value": "'@{item().source_data_date_format}'",
-																"type": "Expression"
-															}
-														},
-														"datasetParameters": {
-															"source1": {
-																"filename": {
-																	"value": "@{item().dest_table}",
-																	"type": "Expression"
-																}
-															},
-															"sink1": {}
-														}
-													},
-													"staging": {},
-													"compute": {
-														"coreCount": 8,
-														"computeType": "General"
-													},
-													"traceLevel": "Fine"
-												}
-											}
-										]
-									}
-								},
-								{
-									"name": "update status",
-									"type": "Lookup",
-									"dependsOn": [
-										{
-											"activity": "If Condition1",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "SqlServerSource",
-											"sqlReaderQuery": "\nupdate source.cfg set status = 'success' where dest_table = '@{item().dest_table}';\nselect 1;\n",
-											"queryTimeout": "02:00:00",
-											"partitionOption": "None"
-										},
-										"dataset": {
-											"referenceName": "dataset_cfg",
-											"type": "DatasetReference",
-											"parameters": {}
-										}
-									}
-								}
-							]
+					],
+					"transformations": [
+						{
+							"name": "GroupByStoreType"
+						},
+						{
+							"name": "GetStoresNotInDimStore"
 						}
-					},
-					{
-						"name": "Loop to copy files",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "get_file_rows",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('get_file_rows').output.value",
-								"type": "Expression"
-							},
-							"isSequential": true,
-							"activities": [
-								{
-									"name": "Copy csv file from local machine to ADLS Gen 2",
-									"type": "Copy",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "DelimitedTextSource",
-											"storeSettings": {
-												"type": "FileServerReadSettings",
-												"recursive": true,
-												"enablePartitionDiscovery": false
-											},
-											"formatSettings": {
-												"type": "DelimitedTextReadSettings"
-											}
-										},
-										"sink": {
-											"type": "DelimitedTextSink",
-											"storeSettings": {
-												"type": "AzureBlobFSWriteSettings"
-											},
-											"formatSettings": {
-												"type": "DelimitedTextWriteSettings",
-												"quoteAllText": true,
-												"fileExtension": ".txt"
-											}
-										},
-										"enableStaging": false,
-										"translator": {
-											"type": "TabularTranslator",
-											"typeConversion": true,
-											"typeConversionSettings": {
-												"allowDataTruncation": true,
-												"treatBooleanAsNumber": false
-											}
-										}
-									},
-									"inputs": [
-										{
-											"referenceName": "ds_cat_subcat",
-											"type": "DatasetReference",
-											"parameters": {
-												"csv_filename": {
-													"value": "@{item().source_table}",
-													"type": "Expression"
-												}
-											}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "DataSet_cfg_datalake_csv",
-											"type": "DatasetReference",
-											"parameters": {
-												"filename": {
-													"value": "@{item().dest_table}",
-													"type": "Expression"
-												}
-											}
-										}
-									]
-								},
-								{
-									"name": "update cft status col - csv input",
-									"type": "Lookup",
-									"dependsOn": [
-										{
-											"activity": "Copy csv file from local machine to ADLS Gen 2",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "SqlServerSource",
-											"sqlReaderQuery": "\nupdate source.cfg set status = 'success' where dest_table = '@{item().dest_table}';\n\nselect 1;",
-											"queryTimeout": "02:00:00",
-											"partitionOption": "None"
-										},
-										"dataset": {
-											"referenceName": "dataset_cfg",
-											"type": "DatasetReference",
-											"parameters": {}
-										}
-									}
-								}
-							]
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2022-08-30T02:00:31Z"
+					],
+					"scriptLines": [
+						"source(output(",
+						"          transaction_id as string,",
+						"          cust_id as string,",
+						"          tran_date as string,",
+						"          prod_subcat_code as string,",
+						"          prod_cat_code as string,",
+						"          Qty as string,",
+						"          Rate as string,",
+						"          Tax as string,",
+						"          total_amt as string,",
+						"          Store_type as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> DataFromTransactionCSVFile",
+						"source(output(",
+						"          store_key as integer,",
+						"          store_type as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> SourceDimStore",
+						"DataFromTransactionCSVFile aggregate(groupBy(Store_type),",
+						"     count = count(transaction_id)) ~> GroupByStoreType",
+						"GroupByStoreType, SourceDimStore exists(GroupByStoreType@Store_type == SourceDimStore@store_type,",
+						"     negate:true,",
+						"     broadcast: 'auto')~> GetStoresNotInDimStore",
+						"GetStoresNotInDimStore sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          store_key as integer,",
+						"          store_type as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     preSQLs:['\\ndelete from [stage].[dim_store];'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     mapColumn(",
+						"          store_type = Store_type",
+						"     )) ~> InsertIntoDimStore"
+					]
+				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/dataset_cfg')]",
-				"[concat(variables('factoryId'), '/datasets/ds_cat_subcat')]",
 				"[concat(variables('factoryId'), '/datasets/DataSet_cfg_datalake_csv')]",
-				"[concat(variables('factoryId'), '/dataflows/update_watermark_value')]"
+				"[concat(variables('factoryId'), '/datasets/ds_dimstore')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/update_watermark_value')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DataSet_cfg_datalake_csv",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "SqlServer_source_cfg_autoresolveIR",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "aggregate1"
+						},
+						{
+							"name": "derivedColumn1"
+						},
+						{
+							"name": "alterRow1"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     file_name as string,",
+						"     watermark_field as string,",
+						"     source_data_date_format as string",
+						"}",
+						"source(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 aggregate(max_date = iif(toString($file_name) == 'customer.csv',\r",
+						"    max(toTimestamp(toString(byName($watermark_field)), 'dd-MM-yyyy HH:mm')),\r",
+						"    max(toTimestamp(byName($watermark_field), 'dd-MM-yyyy'))\r",
+						")) ~> aggregate1",
+						"aggregate1 derive(table_name = $file_name) ~> derivedColumn1",
+						"derivedColumn1 alterRow(updateIf(isNull(max_date)==false())) ~> alterRow1",
+						"alterRow1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          source as string,",
+						"          source_table as string,",
+						"          dest_table as string,",
+						"          source_cols_for_staging as string,",
+						"          watermark_col as string,",
+						"          watermark_val as string,",
+						"          enabled as boolean,",
+						"          load_type as string,",
+						"          status as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:false,",
+						"     updateable:true,",
+						"     upsertable:false,",
+						"     keys:['dest_table'],",
+						"     skipKeyWrites:true,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     mapColumn(",
+						"          dest_table = table_name,",
+						"          watermark_val = max_date",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DataSet_cfg_datalake_csv')]",
+				"[concat(variables('factoryId'), '/datasets/SqlServer_source_cfg_autoresolveIR')]"
 			]
 		}
 	]

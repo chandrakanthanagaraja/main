@@ -11,10 +11,10 @@
 		"datalakestorage_stage_lined_service_accountKey": {
 			"value": ""
 		},
-		"sql_serv_on_vm_linked_service_connectionString": {
+		"ls_cat_subcat_password": {
 			"value": ""
 		},
-		"ls_cat_subcat_password": {
+		"sql_serv_on_vm_linked_service_connectionString": {
 			"value": ""
 		},
 		"datalakestorage_stage_lined_service_properties_typeProperties_url": {
