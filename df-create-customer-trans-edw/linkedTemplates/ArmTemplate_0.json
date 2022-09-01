@@ -292,6 +292,333 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_dimcustomer')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServer_autoResolve_IR",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "customer_key",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "customer_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "customer_name",
+						"type": "varchar"
+					},
+					{
+						"name": "DOB",
+						"type": "varchar"
+					},
+					{
+						"name": "city_code",
+						"type": "varchar"
+					},
+					{
+						"name": "gender",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "stage",
+					"table": "dim_customer"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlServer_autoResolve_IR')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_dimprodcatsubcat')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServer_autoResolve_IR",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "prod_cat_subcat_key",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "product_cat_code",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "product_category",
+						"type": "varchar"
+					},
+					{
+						"name": "product_subcat_code",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "product_subcategory",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "stage",
+					"table": "dim_product_cat_subcat"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlServer_autoResolve_IR')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_dimdate')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServer_autoResolve_IR",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "DateKey",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Date",
+						"type": "date"
+					},
+					{
+						"name": "FullDateUK",
+						"type": "char"
+					},
+					{
+						"name": "FullDateUSA",
+						"type": "char"
+					},
+					{
+						"name": "DayOfMonth",
+						"type": "varchar"
+					},
+					{
+						"name": "DaySuffix",
+						"type": "varchar"
+					},
+					{
+						"name": "DayName",
+						"type": "varchar"
+					},
+					{
+						"name": "DayOfWeekUSA",
+						"type": "char"
+					},
+					{
+						"name": "DayOfWeekUK",
+						"type": "char"
+					},
+					{
+						"name": "DayOfWeekInMonth",
+						"type": "varchar"
+					},
+					{
+						"name": "DayOfWeekInYear",
+						"type": "varchar"
+					},
+					{
+						"name": "DayOfQuarter",
+						"type": "varchar"
+					},
+					{
+						"name": "DayOfYear",
+						"type": "varchar"
+					},
+					{
+						"name": "WeekOfMonth",
+						"type": "varchar"
+					},
+					{
+						"name": "WeekOfQuarter",
+						"type": "varchar"
+					},
+					{
+						"name": "WeekOfYear",
+						"type": "varchar"
+					},
+					{
+						"name": "Month",
+						"type": "varchar"
+					},
+					{
+						"name": "MonthName",
+						"type": "varchar"
+					},
+					{
+						"name": "MonthOfQuarter",
+						"type": "varchar"
+					},
+					{
+						"name": "Quarter",
+						"type": "char"
+					},
+					{
+						"name": "QuarterName",
+						"type": "varchar"
+					},
+					{
+						"name": "Year",
+						"type": "char"
+					},
+					{
+						"name": "YearName",
+						"type": "char"
+					},
+					{
+						"name": "MonthYear",
+						"type": "char"
+					},
+					{
+						"name": "MMYYYY",
+						"type": "char"
+					},
+					{
+						"name": "FirstDayOfMonth",
+						"type": "date"
+					},
+					{
+						"name": "LastDayOfMonth",
+						"type": "date"
+					},
+					{
+						"name": "FirstDayOfQuarter",
+						"type": "date"
+					},
+					{
+						"name": "LastDayOfQuarter",
+						"type": "date"
+					},
+					{
+						"name": "FirstDayOfYear",
+						"type": "date"
+					},
+					{
+						"name": "LastDayOfYear",
+						"type": "date"
+					},
+					{
+						"name": "IsHolidayUSA",
+						"type": "bit"
+					},
+					{
+						"name": "IsWeekday",
+						"type": "bit"
+					},
+					{
+						"name": "HolidayUSA",
+						"type": "varchar"
+					},
+					{
+						"name": "IsHolidayUK",
+						"type": "bit"
+					},
+					{
+						"name": "HolidayUK",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "stage",
+					"table": "DimDate"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlServer_autoResolve_IR')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_facttable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServer_autoResolve_IR",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "Fact_Tran_Key",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "customer_key",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Prod_Cat_SubCat_Key",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Store_Key",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "tran_date",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Quantity",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "rate",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "tax",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "total_amount",
+						"type": "float",
+						"precision": 15
+					}
+				],
+				"typeProperties": {
+					"schema": "stage",
+					"table": "Fact_Transactions"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlServer_autoResolve_IR')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/dataset_cfg')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -642,6 +969,7 @@
 						"     updateable:false,",
 						"     upsertable:false,",
 						"     format: 'table',",
+						"     preSQLs:['\\ndelete from [stage].[dim_store];'],",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
 						"     mapColumn(",
@@ -653,6 +981,232 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DataSet_cfg_datalake_csv')]",
 				"[concat(variables('factoryId'), '/datasets/ds_dimstore')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ActivitiesInDataFlowToLoadFactTable')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_dimcustomer",
+								"type": "DatasetReference"
+							},
+							"name": "DimCustomer"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_dimstore",
+								"type": "DatasetReference"
+							},
+							"name": "DimStore"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_dimprodcatsubcat",
+								"type": "DatasetReference"
+							},
+							"name": "DimProdCatSubCat"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_dimdate",
+								"type": "DatasetReference"
+							},
+							"name": "DimDate"
+						},
+						{
+							"dataset": {
+								"referenceName": "DataSet_cfg_datalake_csv",
+								"type": "DatasetReference"
+							},
+							"name": "StageTransaction"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_facttable",
+								"type": "DatasetReference"
+							},
+							"name": "SinkFactTable"
+						}
+					],
+					"transformations": [
+						{
+							"name": "JoinDimCustomer"
+						},
+						{
+							"name": "JoinDimProdCatSubCat"
+						},
+						{
+							"name": "JoinDimDate"
+						},
+						{
+							"name": "JoinDimStore"
+						},
+						{
+							"name": "DerivedColumns"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          customer_key as integer,",
+						"          customer_id as integer,",
+						"          customer_name as string,",
+						"          DOB as string,",
+						"          city_code as string,",
+						"          gender as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> DimCustomer",
+						"source(output(",
+						"          store_key as integer,",
+						"          store_type as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> DimStore",
+						"source(output(",
+						"          prod_cat_subcat_key as integer,",
+						"          product_cat_code as integer,",
+						"          product_category as string,",
+						"          product_subcat_code as integer,",
+						"          product_subcategory as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> DimProdCatSubCat",
+						"source(output(",
+						"          DateKey as integer,",
+						"          Date as date,",
+						"          FullDateUK as string,",
+						"          FullDateUSA as string,",
+						"          DayOfMonth as string,",
+						"          DaySuffix as string,",
+						"          DayName as string,",
+						"          DayOfWeekUSA as string,",
+						"          DayOfWeekUK as string,",
+						"          DayOfWeekInMonth as string,",
+						"          DayOfWeekInYear as string,",
+						"          DayOfQuarter as string,",
+						"          DayOfYear as string,",
+						"          WeekOfMonth as string,",
+						"          WeekOfQuarter as string,",
+						"          WeekOfYear as string,",
+						"          Month as string,",
+						"          MonthName as string,",
+						"          MonthOfQuarter as string,",
+						"          Quarter as string,",
+						"          QuarterName as string,",
+						"          Year as string,",
+						"          YearName as string,",
+						"          MonthYear as string,",
+						"          MMYYYY as string,",
+						"          FirstDayOfMonth as date,",
+						"          LastDayOfMonth as date,",
+						"          FirstDayOfQuarter as date,",
+						"          LastDayOfQuarter as date,",
+						"          FirstDayOfYear as date,",
+						"          LastDayOfYear as date,",
+						"          IsHolidayUSA as boolean,",
+						"          IsWeekday as boolean,",
+						"          HolidayUSA as string,",
+						"          IsHolidayUK as boolean,",
+						"          HolidayUK as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> DimDate",
+						"source(output(",
+						"          transaction_id as string,",
+						"          cust_id as string,",
+						"          tran_date as string,",
+						"          prod_subcat_code as string,",
+						"          prod_cat_code as string,",
+						"          Qty as string,",
+						"          Rate as string,",
+						"          Tax as string,",
+						"          total_amt as string,",
+						"          Store_type as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> StageTransaction",
+						"StageTransaction, DimCustomer join(toInteger(cust_id) == customer_id,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinDimCustomer",
+						"JoinDimCustomer, DimProdCatSubCat join(toInteger(prod_cat_code) == product_cat_code",
+						"     && toInteger(prod_subcat_code) == product_subcat_code,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinDimProdCatSubCat",
+						"JoinDimProdCatSubCat, DimDate join(toDate(tran_date, 'dd-MM-yyyy') == Date,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinDimDate",
+						"JoinDimDate, DimStore join(StageTransaction@Store_type == DimStore@store_type,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinDimStore",
+						"JoinDimStore derive(qty_int = toInteger(Qty),",
+						"          rate_float = toFloat(Rate),",
+						"          tax_float = toFloat(Tax),",
+						"          total_amt_float = toFloat(total_amt)) ~> DerivedColumns",
+						"DerivedColumns sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Fact_Tran_Key as integer,",
+						"          customer_key as integer,",
+						"          Prod_Cat_SubCat_Key as integer,",
+						"          Store_Key as integer,",
+						"          tran_date as integer,",
+						"          Quantity as integer,",
+						"          rate as double,",
+						"          tax as double,",
+						"          total_amount as double",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     mapColumn(",
+						"          customer_key,",
+						"          Prod_Cat_SubCat_Key = prod_cat_subcat_key,",
+						"          Store_Key = store_key,",
+						"          tran_date = DateKey,",
+						"          Quantity = qty_int,",
+						"          rate = rate_float,",
+						"          tax = tax_float,",
+						"          total_amount = total_amt_float",
+						"     )) ~> SinkFactTable"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_dimcustomer')]",
+				"[concat(variables('factoryId'), '/datasets/ds_dimstore')]",
+				"[concat(variables('factoryId'), '/datasets/ds_dimprodcatsubcat')]",
+				"[concat(variables('factoryId'), '/datasets/ds_dimdate')]",
+				"[concat(variables('factoryId'), '/datasets/DataSet_cfg_datalake_csv')]",
+				"[concat(variables('factoryId'), '/datasets/ds_facttable')]"
 			]
 		},
 		{
@@ -1127,293 +1681,6 @@
 				"[concat(variables('factoryId'), '/datasets/ds_cat_subcat')]",
 				"[concat(variables('factoryId'), '/datasets/DataSet_cfg_datalake_csv')]",
 				"[concat(variables('factoryId'), '/dataflows/update_watermark_value')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pl_load_dim_fact_tables')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Source: ADLS \nDestination: SQL dim and fact tables",
-				"activities": [
-					{
-						"name": "Copy customer",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "SqlServerSink",
-								"preCopyScript": "\ndelete from stage.dim_customer;",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "customer_id",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "customer_id",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "customer_name",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "customer_name",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "dob",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "DOB",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "city_code",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "city_code",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "gender",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "gender",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "DataSet_cfg_datalake_csv",
-								"type": "DatasetReference",
-								"parameters": {
-									"filename": "customer.csv"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "SqlServerTable1",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "Copy prod cat and subcat",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "SqlServerSink",
-								"preCopyScript": "delete from stage.dim_product_cat_subcat;",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "prod_cat_code",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "product_cat_code",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "prod_cat",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "product_category",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "prod_sub_cat_code",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "product_subcat_code",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "prod_subcat",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "product_subcategory",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "DataSet_cfg_datalake_csv",
-								"type": "DatasetReference",
-								"parameters": {
-									"filename": "prod_cat_sub_cat.csv"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "ds_stage_prod_cat_subcat",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "Data Flow to Load Stores into DimStore",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "DataFlow_LoadDimStore",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"DataFromTransactionCSVFile": {
-										"filename": "transaction.csv"
-									},
-									"SourceDimStore": {},
-									"InsertIntoDimStore": {}
-								},
-								"linkedServiceParameters": {
-									"DataFromTransactionCSVFile": {
-										"schemaLinkedService": {
-											"filename": "transaction.csv"
-										}
-									}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DataSet_cfg_datalake_csv')]",
-				"[concat(variables('factoryId'), '/datasets/SqlServerTable1')]",
-				"[concat(variables('factoryId'), '/datasets/ds_stage_prod_cat_subcat')]",
-				"[concat(variables('factoryId'), '/dataflows/DataFlow_LoadDimStore')]"
 			]
 		}
 	]
