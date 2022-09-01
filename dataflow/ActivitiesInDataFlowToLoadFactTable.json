@@ -6,12 +6,16 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "ds_stage_customer",
+						"referenceName": "ds_dimcustomer",
 						"type": "DatasetReference"
 					},
 					"name": "Customers"
 				},
 				{
+					"dataset": {
+						"referenceName": "ds_dimstore",
+						"type": "DatasetReference"
+					},
 					"name": "Stores"
 				}
 			],
@@ -30,8 +34,14 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> Customers",
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> Stores"
+				"source(output(",
+				"          store_key as integer,",
+				"          store_type as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> Stores"
 			]
 		}
 	}
