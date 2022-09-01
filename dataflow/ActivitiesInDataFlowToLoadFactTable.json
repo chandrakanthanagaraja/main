@@ -47,6 +47,9 @@
 				},
 				{
 					"name": "JoinDimProdCatSubCat"
+				},
+				{
+					"name": "JoinDimDate"
 				}
 			],
 			"scriptLines": [
@@ -148,7 +151,12 @@
 				"     joinType:'left',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> JoinDimProdCatSubCat"
+				"     broadcast: 'auto')~> JoinDimProdCatSubCat",
+				"JoinDimProdCatSubCat, DimDate join(toDate(tran_date, 'dd-MM-yyyy') == Date,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> JoinDimDate"
 			]
 		}
 	}
