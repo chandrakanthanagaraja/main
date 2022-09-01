@@ -37,7 +37,7 @@
 						"referenceName": "DataSet_cfg_datalake_csv",
 						"type": "DatasetReference"
 					},
-					"name": "SourceTransaction"
+					"name": "StageTransaction"
 				}
 			],
 			"sinks": [],
@@ -130,7 +130,7 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> SourceTransaction"
+				"     ignoreNoFilesFound: false) ~> StageTransaction"
 			]
 		}
 	}
