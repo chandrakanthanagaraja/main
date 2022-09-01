@@ -278,7 +278,12 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "ActivitiesInDataFlowToLoadFactTable",
-						"type": "DataFlowReference"
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"SourceTransaction": {
+								"filename": "transaction.csv"
+							}
+						}
 					},
 					"compute": {
 						"coreCount": 8,
