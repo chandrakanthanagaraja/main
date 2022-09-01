@@ -35,8 +35,8 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "source",
-			"table": "customer"
+			"schema": "stage",
+			"table": "dim_customer"
 		}
 	}
 }
