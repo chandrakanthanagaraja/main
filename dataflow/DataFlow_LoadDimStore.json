@@ -12,11 +12,19 @@
 					"name": "DataFromTransactionCSVFile"
 				},
 				{
+					"dataset": {
+						"referenceName": "ds_dimstore",
+						"type": "DatasetReference"
+					},
 					"name": "SourceDimStore"
 				}
 			],
 			"sinks": [
 				{
+					"dataset": {
+						"referenceName": "ds_dimstore",
+						"type": "DatasetReference"
+					},
 					"name": "InsertIntoDimStore"
 				}
 			],
@@ -44,14 +52,29 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> DataFromTransactionCSVFile",
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> SourceDimStore",
+				"source(output(",
+				"          store_key as integer,",
+				"          store_type as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> SourceDimStore",
 				"DataFromTransactionCSVFile aggregate(groupBy(Store_type)) ~> GroupByStoreType",
 				"GroupByStoreType, SourceDimStore exists(GroupByStoreType@Store_type == SourceDimStore@store_type,",
 				"     negate:true,",
 				"     broadcast: 'auto')~> GetStoresNotInDimStore",
 				"GetStoresNotInDimStore sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     input(",
+				"          store_key as integer,",
+				"          store_type as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     mapColumn(",
