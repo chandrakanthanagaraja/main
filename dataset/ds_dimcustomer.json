@@ -9,16 +9,21 @@
 		"type": "SqlServerTable",
 		"schema": [
 			{
+				"name": "customer_key",
+				"type": "int",
+				"precision": 10
+			},
+			{
 				"name": "customer_id",
 				"type": "int",
 				"precision": 10
 			},
 			{
-				"name": "dob",
+				"name": "customer_name",
 				"type": "varchar"
 			},
 			{
-				"name": "gender",
+				"name": "DOB",
 				"type": "varchar"
 			},
 			{
@@ -26,11 +31,7 @@
 				"type": "varchar"
 			},
 			{
-				"name": "customer_name",
-				"type": "varchar"
-			},
-			{
-				"name": "created_modified_date",
+				"name": "gender",
 				"type": "varchar"
 			}
 		],
