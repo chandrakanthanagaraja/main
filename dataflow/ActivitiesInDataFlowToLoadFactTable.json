@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "DataSet_cfg_datalake_csv",
+						"referenceName": "ds_dimcustomer",
 						"type": "DatasetReference"
 					},
 					"name": "DimCustomer"
@@ -68,20 +68,17 @@
 			],
 			"scriptLines": [
 				"source(output(",
-				"          transaction_id as string,",
-				"          cust_id as string,",
-				"          tran_date as string,",
-				"          prod_subcat_code as string,",
-				"          prod_cat_code as string,",
-				"          Qty as string,",
-				"          Rate as string,",
-				"          Tax as string,",
-				"          total_amt as string,",
-				"          Store_type as string",
+				"          customer_key as integer,",
+				"          customer_id as integer,",
+				"          customer_name as string,",
+				"          DOB as string,",
+				"          city_code as string,",
+				"          gender as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> DimCustomer",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> DimCustomer",
 				"source(output(",
 				"          store_key as integer,",
 				"          store_type as string",
@@ -158,7 +155,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> StageTransaction",
-				"StageTransaction, DimCustomer join(toInteger(StageTransaction@cust_id) == customer_id,",
+				"StageTransaction, DimCustomer join(toInteger(StageTransaction@customer_id) == customer_id,",
 				"     joinType:'left',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
