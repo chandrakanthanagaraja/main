@@ -7,34 +7,7 @@
 		},
 		"annotations": [],
 		"type": "SqlServerTable",
-		"schema": [
-			{
-				"name": "customer_key",
-				"type": "int",
-				"precision": 10
-			},
-			{
-				"name": "customer_id",
-				"type": "int",
-				"precision": 10
-			},
-			{
-				"name": "customer_name",
-				"type": "varchar"
-			},
-			{
-				"name": "DOB",
-				"type": "varchar"
-			},
-			{
-				"name": "city_code",
-				"type": "varchar"
-			},
-			{
-				"name": "gender",
-				"type": "varchar"
-			}
-		],
+		"schema": [],
 		"typeProperties": {
 			"schema": "stage",
 			"table": "dim_customer"
