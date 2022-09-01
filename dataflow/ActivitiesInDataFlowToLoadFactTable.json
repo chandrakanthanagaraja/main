@@ -201,8 +201,14 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     mapColumn(",
+				"          customer_key,",
 				"          Prod_Cat_SubCat_Key = prod_cat_subcat_key,",
-				"          Store_Key = store_key",
+				"          Store_Key = store_key,",
+				"          tran_date = DateKey,",
+				"          Quantity = qty_int,",
+				"          rate = rate_float,",
+				"          tax = tax_float,",
+				"          total_amount = total_amt_float",
 				"     )) ~> SinkFactTable"
 			]
 		}

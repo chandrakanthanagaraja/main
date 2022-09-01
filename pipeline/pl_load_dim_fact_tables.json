@@ -280,18 +280,8 @@
 						"referenceName": "ActivitiesInDataFlowToLoadFactTable",
 						"type": "DataFlowReference",
 						"datasetParameters": {
-							"DimCustomer": {
-								"filename": "customer.csv"
-							},
 							"StageTransaction": {
 								"filename": "transaction.csv"
-							}
-						},
-						"linkedServiceParameters": {
-							"DimCustomer": {
-								"schemaLinkedService": {
-									"filename": "customer.csv"
-								}
 							}
 						}
 					},
