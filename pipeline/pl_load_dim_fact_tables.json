@@ -247,6 +247,13 @@
 							"DataFromTransactionCSVFile": {
 								"filename": "transaction.csv"
 							}
+						},
+						"linkedServiceParameters": {
+							"DataFromTransactionCSVFile": {
+								"schemaLinkedService": {
+									"filename": "transaction.csv"
+								}
+							}
 						}
 					},
 					"compute": {
