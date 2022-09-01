@@ -6,10 +6,13 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "ds_stage",
+						"referenceName": "ds_stage_customer",
 						"type": "DatasetReference"
 					},
 					"name": "Customers"
+				},
+				{
+					"name": "Stores"
 				}
 			],
 			"sinks": [],
@@ -26,7 +29,9 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> Customers"
+				"     format: 'table') ~> Customers",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false) ~> Stores"
 			]
 		}
 	}
