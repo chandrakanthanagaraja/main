@@ -526,7 +526,7 @@
 				"parameters": {
 					"filename": {
 						"type": "string",
-						"defaultValue": "filename_notset"
+						"defaultValue": "transaction.csv"
 					}
 				},
 				"annotations": [],
@@ -546,7 +546,48 @@
 					"firstRowAsHeader": true,
 					"quoteChar": "\""
 				},
-				"schema": []
+				"schema": [
+					{
+						"name": "transaction_id",
+						"type": "String"
+					},
+					{
+						"name": "cust_id",
+						"type": "String"
+					},
+					{
+						"name": "tran_date",
+						"type": "String"
+					},
+					{
+						"name": "prod_subcat_code",
+						"type": "String"
+					},
+					{
+						"name": "prod_cat_code",
+						"type": "String"
+					},
+					{
+						"name": "Qty",
+						"type": "String"
+					},
+					{
+						"name": "Rate",
+						"type": "String"
+					},
+					{
+						"name": "Tax",
+						"type": "String"
+					},
+					{
+						"name": "total_amt",
+						"type": "String"
+					},
+					{
+						"name": "Store_type",
+						"type": "String"
+					}
+				]
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/datalakestorage_stage_lined_service')]"
@@ -1103,6 +1144,46 @@
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "Data Flow to Load Stores into DimStore",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "DataFlow_LoadDimStore",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"DataFromTransactionCSVFile": {
+										"filename": "transaction.csv"
+									},
+									"SourceDimStore": {},
+									"InsertIntoDimStore": {}
+								},
+								"linkedServiceParameters": {
+									"DataFromTransactionCSVFile": {
+										"schemaLinkedService": {
+											"filename": "transaction.csv"
+										}
+									}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
 					}
 				],
 				"policy": {
@@ -1114,7 +1195,8 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DataSet_cfg_datalake_csv')]",
 				"[concat(variables('factoryId'), '/datasets/SqlServerTable1')]",
-				"[concat(variables('factoryId'), '/datasets/ds_stage_prod_cat_subcat')]"
+				"[concat(variables('factoryId'), '/datasets/ds_stage_prod_cat_subcat')]",
+				"[concat(variables('factoryId'), '/dataflows/DataFlow_LoadDimStore')]"
 			]
 		},
 		{
@@ -1208,6 +1290,130 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/sql_serv_on_vm_linked_service')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DataFlow_LoadDimStore')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DataSet_cfg_datalake_csv",
+								"type": "DatasetReference"
+							},
+							"name": "DataFromTransactionCSVFile"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_dimstore",
+								"type": "DatasetReference"
+							},
+							"name": "SourceDimStore"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_dimstore",
+								"type": "DatasetReference"
+							},
+							"name": "InsertIntoDimStore"
+						}
+					],
+					"transformations": [
+						{
+							"name": "GroupByStoreType"
+						},
+						{
+							"name": "GetStoresNotInDimStore"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          transaction_id as string,",
+						"          cust_id as string,",
+						"          tran_date as string,",
+						"          prod_subcat_code as string,",
+						"          prod_cat_code as string,",
+						"          Qty as string,",
+						"          Rate as string,",
+						"          Tax as string,",
+						"          total_amt as string,",
+						"          Store_type as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> DataFromTransactionCSVFile",
+						"source(output(",
+						"          store_key as integer,",
+						"          store_type as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> SourceDimStore",
+						"DataFromTransactionCSVFile aggregate(groupBy(Store_type),",
+						"     count = count(transaction_id)) ~> GroupByStoreType",
+						"GroupByStoreType, SourceDimStore exists(GroupByStoreType@Store_type == SourceDimStore@store_type,",
+						"     negate:true,",
+						"     broadcast: 'auto')~> GetStoresNotInDimStore",
+						"GetStoresNotInDimStore sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          store_key as integer,",
+						"          store_type as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     mapColumn(",
+						"          store_type = Store_type",
+						"     )) ~> InsertIntoDimStore"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DataSet_cfg_datalake_csv')]",
+				"[concat(variables('factoryId'), '/datasets/ds_dimstore')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_dimstore')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServer_autoResolve_IR",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "store_key",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "store_type",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "stage",
+					"table": "dim_store"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlServer_autoResolve_IR')]"
 			]
 		}
 	]
