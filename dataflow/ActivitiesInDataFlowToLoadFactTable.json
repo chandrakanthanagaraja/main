@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "ds_dimcustomer",
+						"referenceName": "DataSet_cfg_datalake_csv",
 						"type": "DatasetReference"
 					},
 					"name": "DimCustomer"
@@ -40,7 +40,15 @@
 					"name": "StageTransaction"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_facttable",
+						"type": "DatasetReference"
+					},
+					"name": "SinkFactTable"
+				}
+			],
 			"transformations": [
 				{
 					"name": "JoinDimCustomer"
@@ -60,17 +68,20 @@
 			],
 			"scriptLines": [
 				"source(output(",
-				"          customer_id as integer,",
-				"          dob as string,",
-				"          gender as string,",
-				"          city_code as string,",
-				"          customer_name as string,",
-				"          created_modified_date as string",
+				"          transaction_id as string,",
+				"          cust_id as string,",
+				"          tran_date as string,",
+				"          prod_subcat_code as string,",
+				"          prod_cat_code as string,",
+				"          Qty as string,",
+				"          Rate as string,",
+				"          Tax as string,",
+				"          total_amt as string,",
+				"          Store_type as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> DimCustomer",
+				"     ignoreNoFilesFound: false) ~> DimCustomer",
 				"source(output(",
 				"          store_key as integer,",
 				"          store_type as string",
@@ -147,18 +158,18 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> StageTransaction",
-				"StageTransaction, DimCustomer join(toInteger(cust_id) == customer_id,",
+				"StageTransaction, DimCustomer join(toInteger(StageTransaction@cust_id) == customer_id,",
 				"     joinType:'left',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> JoinDimCustomer",
-				"JoinDimCustomer, DimProdCatSubCat join(toInteger(prod_cat_code) == product_cat_code",
-				"     && toInteger(prod_subcat_code) == product_subcat_code,",
+				"JoinDimCustomer, DimProdCatSubCat join(toInteger(StageTransaction@prod_cat_code) == product_cat_code",
+				"     && toInteger(StageTransaction@prod_subcat_code) == product_subcat_code,",
 				"     joinType:'left',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> JoinDimProdCatSubCat",
-				"JoinDimProdCatSubCat, DimDate join(toDate(tran_date, 'dd-MM-yyyy') == Date,",
+				"JoinDimProdCatSubCat, DimDate join(toDate(StageTransaction@tran_date, 'dd-MM-yyyy') == Date,",
 				"     joinType:'left',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
@@ -168,10 +179,34 @@
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> JoinDimStore",
-				"JoinDimStore derive(qty_int = toInteger(Qty),",
-				"          rate_float = toFloat(Rate),",
-				"          tax_float = toFloat(Tax),",
-				"          total_amt_float = toFloat(total_amt)) ~> DerivedColumns"
+				"JoinDimStore derive(qty_int = toInteger(StageTransaction@Qty),",
+				"          rate_float = toFloat(StageTransaction@Rate),",
+				"          tax_float = toFloat(StageTransaction@Tax),",
+				"          total_amt_float = toFloat(StageTransaction@total_amt)) ~> DerivedColumns",
+				"DerivedColumns sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Fact_Tran_Key as integer,",
+				"          customer_key as integer,",
+				"          Prod_Cat_SubCat_Key as integer,",
+				"          Store_Key as integer,",
+				"          tran_date as integer,",
+				"          Quantity as integer,",
+				"          rate as double,",
+				"          tax as double,",
+				"          total_amount as double",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          Prod_Cat_SubCat_Key = prod_cat_subcat_key,",
+				"          Store_Key = store_key",
+				"     )) ~> SinkFactTable"
 			]
 		}
 	}
