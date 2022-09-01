@@ -1,0 +1,16 @@
+{
+	"name": "ds_dimdate",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlServer_autoResolve_IR",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "stage",
+			"table": "DimDate"
+		}
+	}
+}

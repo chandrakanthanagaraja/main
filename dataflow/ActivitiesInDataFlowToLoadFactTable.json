@@ -9,14 +9,28 @@
 						"referenceName": "ds_dimcustomer",
 						"type": "DatasetReference"
 					},
-					"name": "Customers"
+					"name": "DimCustomer"
 				},
 				{
 					"dataset": {
 						"referenceName": "ds_dimstore",
 						"type": "DatasetReference"
 					},
-					"name": "Stores"
+					"name": "DimStore"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_dimprodcatsubcat",
+						"type": "DatasetReference"
+					},
+					"name": "DimProdCatSubCat"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_dimdate",
+						"type": "DatasetReference"
+					},
+					"name": "DimDate"
 				}
 			],
 			"sinks": [],
@@ -33,7 +47,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> Customers",
+				"     format: 'table') ~> DimCustomer",
 				"source(output(",
 				"          store_key as integer,",
 				"          store_type as string",
@@ -41,7 +55,22 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> Stores"
+				"     format: 'table') ~> DimStore",
+				"source(output(",
+				"          prod_cat_subcat_key as integer,",
+				"          product_cat_code as integer,",
+				"          product_category as string,",
+				"          product_subcat_code as integer,",
+				"          product_subcategory as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> DimProdCatSubCat",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> DimDate"
 			]
 		}
 	}

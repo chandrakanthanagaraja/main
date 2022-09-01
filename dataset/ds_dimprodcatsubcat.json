@@ -1,0 +1,40 @@
+{
+	"name": "ds_dimprodcatsubcat",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlServer_autoResolve_IR",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "prod_cat_subcat_key",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "product_cat_code",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "product_category",
+				"type": "varchar"
+			},
+			{
+				"name": "product_subcat_code",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "product_subcategory",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "stage",
+			"table": "dim_product_cat_subcat"
+		}
+	}
+}
