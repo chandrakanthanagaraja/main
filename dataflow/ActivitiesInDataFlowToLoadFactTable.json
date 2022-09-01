@@ -50,6 +50,9 @@
 				},
 				{
 					"name": "JoinDimDate"
+				},
+				{
+					"name": "JoinDimStore"
 				}
 			],
 			"scriptLines": [
@@ -156,7 +159,12 @@
 				"     joinType:'left',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> JoinDimDate"
+				"     broadcast: 'auto')~> JoinDimDate",
+				"JoinDimDate, DimStore join(StageTransaction@Store_type == DimStore@store_type,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> JoinDimStore"
 			]
 		}
 	}
