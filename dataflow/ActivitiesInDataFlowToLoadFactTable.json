@@ -15,7 +15,15 @@
 			"sinks": [],
 			"transformations": [],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          customer_id as integer,",
+				"          dob as string,",
+				"          gender as string,",
+				"          city_code as string,",
+				"          customer_name as string,",
+				"          created_modified_date as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> Customers"
