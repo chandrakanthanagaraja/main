@@ -124,11 +124,33 @@
 										"typeProperties": {
 											"source": {
 												"type": "SqlServerSource",
-												"sqlReaderQuery": "",
+												"sqlReaderQuery": {
+													"value": "select @{item().source_cols_for_staging} \nfrom @{item().source_table}\nwhere \nconvert(datetime, @{item().watermark_col}, 101) > \nconvert(datetime, '@{item().watermark_val}', 120);",
+													"type": "Expression"
+												},
 												"queryTimeout": "02:00:00",
 												"partitionOption": "None"
 											},
-											"enableStaging": false
+											"sink": {
+												"type": "DelimitedTextSink",
+												"storeSettings": {
+													"type": "AzureBlobFSWriteSettings"
+												},
+												"formatSettings": {
+													"type": "DelimitedTextWriteSettings",
+													"quoteAllText": true,
+													"fileExtension": ".txt"
+												}
+											},
+											"enableStaging": false,
+											"translator": {
+												"type": "TabularTranslator",
+												"typeConversion": true,
+												"typeConversionSettings": {
+													"allowDataTruncation": true,
+													"treatBooleanAsNumber": false
+												}
+											}
 										},
 										"inputs": [
 											{
@@ -138,6 +160,12 @@
 													"table_name": "@{item().source_table}",
 													"schema_name": "dbo"
 												}
+											}
+										],
+										"outputs": [
+											{
+												"referenceName": "ds_cfg",
+												"type": "DatasetReference"
 											}
 										]
 									}
