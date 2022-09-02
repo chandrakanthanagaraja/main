@@ -1,0 +1,25 @@
+{
+	"name": "ds_vm_sqlserver",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_vm_sql_server",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"table_name": {
+				"type": "string",
+				"defaultValue": "customer"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": {
+				"value": "@dataset().table_name",
+				"type": "Expression"
+			}
+		}
+	}
+}
