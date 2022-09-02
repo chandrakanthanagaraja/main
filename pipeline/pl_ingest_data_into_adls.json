@@ -194,6 +194,16 @@
 											"dataflow": {
 												"referenceName": "dataflow_activity_update_watermark_dt",
 												"type": "DataFlowReference",
+												"parameters": {
+													"watermark_col_name": {
+														"value": "@{item().watermark_col}",
+														"type": "Expression"
+													},
+													"watermark_val_dt_fmt": {
+														"value": "@{item().source_data_date_format}",
+														"type": "Expression"
+													}
+												},
 												"datasetParameters": {
 													"LoadDataFromCSV": {
 														"stage_file_name": "@{item().dest_table}"
