@@ -3,12 +3,57 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Wait1",
-				"type": "Wait",
+				"name": "Get config records",
+				"type": "Lookup",
 				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
 				"userProperties": [],
 				"typeProperties": {
-					"waitTimeInSeconds": 1
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"dataset": {
+						"referenceName": "ds_cfg",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "Filter for sqldb records",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Get config records",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get config records').output.value",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals(item().source, 'SQLDB')",
+						"type": "Expression"
+					}
 				}
 			}
 		],
