@@ -55,6 +55,29 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "Filter for non sqldb records",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Get config records",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get config records').output.value",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals(equals(item().source, 'SQLDB'), false)",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"annotations": []
