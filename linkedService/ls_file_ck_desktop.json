@@ -1,0 +1,17 @@
+{
+	"name": "ls_file_ck_desktop",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "FileServer",
+		"typeProperties": {
+			"host": "\\\\WINDOWS-04S6H81\\Users\\NadikatCN\\Documents\\Azure\\DP-203-DataEngineer\\Course - Azure Data Factory Real World Project End to End and Use Cases by Amit Navgire\\ProdCatSubCatFolder",
+			"userId": "nadikatcn",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJhM2IyNTRiOS00MWI2LTQ3MDMtYmI5NS1lZWE3NGEyZDM4M2IiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "self-hosted-integration-runtime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
