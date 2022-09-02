@@ -38,7 +38,7 @@
 				"type": "Filter",
 				"dependsOn": [
 					{
-						"activity": "Get config records",
+						"activity": "Filter for Enabled Recs",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -47,7 +47,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Get config records').output.value",
+						"value": "@activity('Filter for Enabled Recs').output.value",
 						"type": "Expression"
 					},
 					"condition": {
@@ -61,7 +61,7 @@
 				"type": "Filter",
 				"dependsOn": [
 					{
-						"activity": "Get config records",
+						"activity": "Filter for Enabled Recs",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -70,7 +70,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Get config records').output.value",
+						"value": "@activity('Filter for Enabled Recs').output.value",
 						"type": "Expression"
 					},
 					"condition": {
@@ -124,6 +124,7 @@
 										"typeProperties": {
 											"source": {
 												"type": "SqlServerSource",
+												"sqlReaderQuery": "",
 												"queryTimeout": "02:00:00",
 												"partitionOption": "None"
 											},
@@ -134,7 +135,7 @@
 												"referenceName": "ds_vm_sqlserver",
 												"type": "DatasetReference",
 												"parameters": {
-													"table_name": "customer",
+													"table_name": "@{item().source_table}",
 													"schema_name": "dbo"
 												}
 											}
@@ -144,6 +145,29 @@
 							}
 						}
 					]
+				}
+			},
+			{
+				"name": "Filter for Enabled Recs",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Get config records",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get config records').output.value",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals(item().enabled, '1')",
+						"type": "Expression"
+					}
 				}
 			}
 		],
