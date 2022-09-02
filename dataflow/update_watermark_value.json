@@ -5,19 +5,11 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "DataSet_cfg_datalake_csv",
-						"type": "DatasetReference"
-					},
 					"name": "source1"
 				}
 			],
 			"sinks": [
 				{
-					"dataset": {
-						"referenceName": "SqlServer_source_cfg_autoresolveIR",
-						"type": "DatasetReference"
-					},
 					"name": "sink1"
 				}
 			],
@@ -39,8 +31,7 @@
 				"     source_data_date_format as string",
 				"}",
 				"source(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source1",
+				"     validateSchema: false) ~> source1",
 				"source1 aggregate(max_date = iif(toString($file_name) == 'customer.csv',\r",
 				"    max(toTimestamp(toString(byName($watermark_field)), 'dd-MM-yyyy HH:mm')),\r",
 				"    max(toTimestamp(byName($watermark_field), 'dd-MM-yyyy'))\r",
@@ -49,30 +40,13 @@
 				"derivedColumn1 alterRow(updateIf(isNull(max_date)==false())) ~> alterRow1",
 				"alterRow1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     input(",
-				"          source as string,",
-				"          source_table as string,",
-				"          dest_table as string,",
-				"          source_cols_for_staging as string,",
-				"          watermark_col as string,",
-				"          watermark_val as string,",
-				"          enabled as boolean,",
-				"          load_type as string,",
-				"          status as string",
-				"     ),",
-				"     deletable:false,",
-				"     insertable:false,",
-				"     updateable:true,",
-				"     upsertable:false,",
-				"     keys:['dest_table'],",
-				"     skipKeyWrites:true,",
-				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     mapColumn(",
 				"          dest_table = table_name,",
 				"          watermark_val = max_date",
-				"     )) ~> sink1"
+				"     ),",
+				"     format: 'table') ~> sink1"
 			]
 		}
 	}

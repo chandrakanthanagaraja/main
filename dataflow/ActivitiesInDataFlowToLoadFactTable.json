@@ -5,47 +5,23 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "ds_dimcustomer",
-						"type": "DatasetReference"
-					},
 					"name": "DimCustomer"
 				},
 				{
-					"dataset": {
-						"referenceName": "ds_dimstore",
-						"type": "DatasetReference"
-					},
 					"name": "DimStore"
 				},
 				{
-					"dataset": {
-						"referenceName": "ds_dimprodcatsubcat",
-						"type": "DatasetReference"
-					},
 					"name": "DimProdCatSubCat"
 				},
 				{
-					"dataset": {
-						"referenceName": "ds_dimdate",
-						"type": "DatasetReference"
-					},
 					"name": "DimDate"
 				},
 				{
-					"dataset": {
-						"referenceName": "DataSet_cfg_datalake_csv",
-						"type": "DatasetReference"
-					},
 					"name": "StageTransaction"
 				}
 			],
 			"sinks": [
 				{
-					"dataset": {
-						"referenceName": "ds_facttable",
-						"type": "DatasetReference"
-					},
 					"name": "SinkFactTable"
 				}
 			],
@@ -76,17 +52,13 @@
 				"          gender as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> DimCustomer",
+				"     validateSchema: false) ~> DimCustomer",
 				"source(output(",
 				"          store_key as integer,",
 				"          store_type as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> DimStore",
+				"     validateSchema: false) ~> DimStore",
 				"source(output(",
 				"          prod_cat_subcat_key as integer,",
 				"          product_cat_code as integer,",
@@ -95,9 +67,7 @@
 				"          product_subcategory as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> DimProdCatSubCat",
+				"     validateSchema: false) ~> DimProdCatSubCat",
 				"source(output(",
 				"          DateKey as integer,",
 				"          Date as date,",
@@ -137,9 +107,7 @@
 				"          HolidayUK as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> DimDate",
+				"     validateSchema: false) ~> DimDate",
 				"source(output(",
 				"          transaction_id as string,",
 				"          cust_id as string,",
@@ -153,8 +121,7 @@
 				"          Store_type as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> StageTransaction",
+				"     validateSchema: false) ~> StageTransaction",
 				"StageTransaction, DimCustomer join(toInteger(cust_id) == customer_id,",
 				"     joinType:'left',",
 				"     matchType:'exact',",
@@ -182,22 +149,6 @@
 				"          total_amt_float = toFloat(total_amt)) ~> DerivedColumns",
 				"DerivedColumns sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     input(",
-				"          Fact_Tran_Key as integer,",
-				"          customer_key as integer,",
-				"          Prod_Cat_SubCat_Key as integer,",
-				"          Store_Key as integer,",
-				"          tran_date as integer,",
-				"          Quantity as integer,",
-				"          rate as double,",
-				"          tax as double,",
-				"          total_amount as double",
-				"     ),",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     mapColumn(",
@@ -209,7 +160,8 @@
 				"          rate = rate_float,",
 				"          tax = tax_float,",
 				"          total_amount = total_amt_float",
-				"     )) ~> SinkFactTable"
+				"     ),",
+				"     format: 'table') ~> SinkFactTable"
 			]
 		}
 	}

@@ -5,26 +5,14 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "DataSet_cfg_datalake_csv",
-						"type": "DatasetReference"
-					},
 					"name": "DataFromTransactionCSVFile"
 				},
 				{
-					"dataset": {
-						"referenceName": "ds_dimstore",
-						"type": "DatasetReference"
-					},
 					"name": "SourceDimStore"
 				}
 			],
 			"sinks": [
 				{
-					"dataset": {
-						"referenceName": "ds_dimstore",
-						"type": "DatasetReference"
-					},
 					"name": "InsertIntoDimStore"
 				}
 			],
@@ -50,16 +38,13 @@
 				"          Store_type as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> DataFromTransactionCSVFile",
+				"     validateSchema: false) ~> DataFromTransactionCSVFile",
 				"source(output(",
 				"          store_key as integer,",
 				"          store_type as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> SourceDimStore",
+				"     validateSchema: false) ~> SourceDimStore",
 				"DataFromTransactionCSVFile aggregate(groupBy(Store_type),",
 				"     count = count(transaction_id)) ~> GroupByStoreType",
 				"GroupByStoreType, SourceDimStore exists(GroupByStoreType@Store_type == SourceDimStore@store_type,",
@@ -67,21 +52,12 @@
 				"     broadcast: 'auto')~> GetStoresNotInDimStore",
 				"GetStoresNotInDimStore sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     input(",
-				"          store_key as integer,",
-				"          store_type as string",
-				"     ),",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     format: 'table',",
-				"     preSQLs:['\\ndelete from [stage].[dim_store];'],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     mapColumn(",
 				"          store_type = Store_type",
-				"     )) ~> InsertIntoDimStore"
+				"     ),",
+				"     format: 'table') ~> InsertIntoDimStore"
 			]
 		}
 	}
