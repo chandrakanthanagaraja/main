@@ -1,0 +1,64 @@
+{
+	"name": "ds_cfg",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adl_storageacctdp203",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "cfg.csv",
+				"fileSystem": "ckcontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "source",
+				"type": "String"
+			},
+			{
+				"name": "source_table",
+				"type": "String"
+			},
+			{
+				"name": "dest_table",
+				"type": "String"
+			},
+			{
+				"name": "source_cols_for_staging",
+				"type": "String"
+			},
+			{
+				"name": "watermark_col",
+				"type": "String"
+			},
+			{
+				"name": "watermark_val",
+				"type": "String"
+			},
+			{
+				"name": "enabled",
+				"type": "String"
+			},
+			{
+				"name": "load_type",
+				"type": "String"
+			},
+			{
+				"name": "status",
+				"type": "String"
+			},
+			{
+				"name": "source_data_date_format",
+				"type": "String"
+			}
+		]
+	}
+}
