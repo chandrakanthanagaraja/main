@@ -16,19 +16,18 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "AzureBlobFSReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "\nselect * from dbo.cfg where enabled = 1;",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "ds_cfg",
-						"type": "DatasetReference"
+						"referenceName": "ds_azure_edwdb",
+						"type": "DatasetReference",
+						"parameters": {
+							"edw_table_name": "cfg",
+							"edw_schema_name": "dbo"
+						}
 					},
 					"firstRowOnly": false
 				}
@@ -38,7 +37,7 @@
 				"type": "Filter",
 				"dependsOn": [
 					{
-						"activity": "Filter for Enabled Recs",
+						"activity": "Get config records",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -47,7 +46,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Filter for Enabled Recs').output.value",
+						"value": "@activity('Get config records').output.value",
 						"type": "Expression"
 					},
 					"condition": {
@@ -61,7 +60,7 @@
 				"type": "Filter",
 				"dependsOn": [
 					{
-						"activity": "Filter for Enabled Recs",
+						"activity": "Get config records",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -70,7 +69,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Filter for Enabled Recs').output.value",
+						"value": "@activity('Get config records').output.value",
 						"type": "Expression"
 					},
 					"condition": {
@@ -176,29 +175,6 @@
 							}
 						}
 					]
-				}
-			},
-			{
-				"name": "Filter for Enabled Recs",
-				"type": "Filter",
-				"dependsOn": [
-					{
-						"activity": "Get config records",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"items": {
-						"value": "@activity('Get config records').output.value",
-						"type": "Expression"
-					},
-					"condition": {
-						"value": "@equals(item().enabled, '1')",
-						"type": "Expression"
-					}
 				}
 			}
 		],
