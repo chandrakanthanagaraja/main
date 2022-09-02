@@ -1,0 +1,32 @@
+{
+	"name": "ds_azure_edwdb",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azure_sql_server",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"edw_table_name": {
+				"type": "string",
+				"defaultValue": "cfg"
+			},
+			"edw_schema_name": {
+				"type": "string",
+				"defaultValue": "dbo"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().edw_schema_name",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().edw_table_name",
+				"type": "Expression"
+			}
+		}
+	}
+}
