@@ -78,6 +78,40 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "ForEachSQLDBRecs",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Filter for sqldb records",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Filter for sqldb records').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "CheckForIncrementalLoad",
+							"type": "IfCondition",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@equals(item().load_type, 'incremental')",
+									"type": "Expression"
+								}
+							}
+						}
+					]
+				}
 			}
 		],
 		"annotations": []
