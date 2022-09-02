@@ -11,29 +11,9 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SqlServer_autoResolve_IR'"
 		},
-		"datalakestorage_stage_lined_service_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'datalakestorage_stage_lined_service'"
-		},
-		"ls_cat_subcat_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'ls_cat_subcat'"
-		},
 		"sql_serv_on_vm_linked_service_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'sql_serv_on_vm_linked_service'"
-		},
-		"datalakestorage_stage_lined_service_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://stogareacctdp203.dfs.core.windows.net/"
-		},
-		"ls_cat_subcat_properties_typeProperties_host": {
-			"type": "string",
-			"defaultValue": "\\\\WINDOWS-04S6H81\\Users\\NadikatCN\\Documents\\Azure\\DP-203-DataEngineer\\Course - Azure Data Factory Real World Project End to End and Use Cases by Amit Navgire\\ProdCatSubCatFolder"
-		},
-		"ls_cat_subcat_properties_typeProperties_userId": {
-			"type": "string",
-			"defaultValue": "NadikatCN"
 		},
 		"containerUri": {
 			"type": "string",
@@ -65,23 +45,8 @@
 					"SqlServer_autoResolve_IR_connectionString": {
 						"value": "[parameters('SqlServer_autoResolve_IR_connectionString')]"
 					},
-					"datalakestorage_stage_lined_service_accountKey": {
-						"value": "[parameters('datalakestorage_stage_lined_service_accountKey')]"
-					},
-					"ls_cat_subcat_password": {
-						"value": "[parameters('ls_cat_subcat_password')]"
-					},
 					"sql_serv_on_vm_linked_service_connectionString": {
 						"value": "[parameters('sql_serv_on_vm_linked_service_connectionString')]"
-					},
-					"datalakestorage_stage_lined_service_properties_typeProperties_url": {
-						"value": "[parameters('datalakestorage_stage_lined_service_properties_typeProperties_url')]"
-					},
-					"ls_cat_subcat_properties_typeProperties_host": {
-						"value": "[parameters('ls_cat_subcat_properties_typeProperties_host')]"
-					},
-					"ls_cat_subcat_properties_typeProperties_userId": {
-						"value": "[parameters('ls_cat_subcat_properties_typeProperties_userId')]"
 					}
 				}
 			},
