@@ -164,8 +164,11 @@
 										],
 										"outputs": [
 											{
-												"referenceName": "ds_cfg",
-												"type": "DatasetReference"
+												"referenceName": "ds_storageacct_stage",
+												"type": "DatasetReference",
+												"parameters": {
+													"stage_file_name": "@{item().dest_table}"
+												}
 											}
 										]
 									}
