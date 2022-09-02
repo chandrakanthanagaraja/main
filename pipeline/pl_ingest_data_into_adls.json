@@ -172,8 +172,8 @@
 										]
 									},
 									{
-										"name": "load csv file data",
-										"type": "Lookup",
+										"name": "data flow to update cfg watermark date",
+										"type": "ExecuteDataFlow",
 										"dependsOn": [
 											{
 												"activity": "Copy data to ADLS",
@@ -191,25 +191,20 @@
 										},
 										"userProperties": [],
 										"typeProperties": {
-											"source": {
-												"type": "DelimitedTextSource",
-												"storeSettings": {
-													"type": "AzureBlobFSReadSettings",
-													"recursive": true,
-													"enablePartitionDiscovery": false
-												},
-												"formatSettings": {
-													"type": "DelimitedTextReadSettings"
+											"dataflow": {
+												"referenceName": "dataflow_activity_update_watermark_dt",
+												"type": "DataFlowReference",
+												"datasetParameters": {
+													"LoadDataFromCSV": {
+														"stage_file_name": "@{item().dest_table}"
+													}
 												}
 											},
-											"dataset": {
-												"referenceName": "ds_storageacct_stage",
-												"type": "DatasetReference",
-												"parameters": {
-													"stage_file_name": "@{item().dest_table}"
-												}
+											"compute": {
+												"coreCount": 8,
+												"computeType": "General"
 											},
-											"firstRowOnly": false
+											"traceLevel": "Fine"
 										}
 									}
 								]

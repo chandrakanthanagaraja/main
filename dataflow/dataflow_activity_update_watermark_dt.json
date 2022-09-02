@@ -1,0 +1,24 @@
+{
+	"name": "dataflow_activity_update_watermark_dt",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_storageacct_stage",
+						"type": "DatasetReference"
+					},
+					"name": "LoadDataFromCSV"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> LoadDataFromCSV"
+			]
+		}
+	}
+}
