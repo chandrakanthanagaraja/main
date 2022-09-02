@@ -9,13 +9,20 @@
 			"table_name": {
 				"type": "string",
 				"defaultValue": "customer"
+			},
+			"schema_name": {
+				"type": "string",
+				"defaultValue": "dbo"
 			}
 		},
 		"annotations": [],
 		"type": "SqlServerTable",
 		"schema": [],
 		"typeProperties": {
-			"schema": "dbo",
+			"schema": {
+				"value": "@dataset().schema_name",
+				"type": "Expression"
+			},
 			"table": {
 				"value": "@dataset().table_name",
 				"type": "Expression"
