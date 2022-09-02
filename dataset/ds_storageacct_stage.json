@@ -16,11 +16,16 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().stage_file_name",
+					"type": "Expression"
+				},
 				"folderPath": "stage",
 				"fileSystem": "ckcontainer"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
+			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
 		"schema": []
