@@ -13,11 +13,16 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "AggActGetMaxDate"
+				}
+			],
 			"scriptLines": [
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> LoadDataFromCSV"
+				"     ignoreNoFilesFound: false) ~> LoadDataFromCSV",
+				"LoadDataFromCSV aggregate(groupBy({@{item().watermark_col}} = ERROR_FUNCTION(''))) ~> AggActGetMaxDate"
 			]
 		}
 	}
