@@ -1,0 +1,16 @@
+{
+	"name": "ls_vm_sql_server",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=False;data source=52.149.227.157;initial catalog=sqldb_on_vm157;user id=ckadmin",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJmYWNmMDVhNS01ZTRjLTQ2MWItYmE2MC1iODhkNGVlNDQwZmEiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "self-hosted-integration-runtime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
