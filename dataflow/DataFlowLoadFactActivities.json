@@ -9,7 +9,35 @@
 						"referenceName": "ds_storageacct_stage",
 						"type": "DatasetReference"
 					},
-					"name": "GetTransactions"
+					"name": "GetCustTransactions"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_dim_customer",
+						"type": "DatasetReference"
+					},
+					"name": "GetDimCustomers"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_dim_store",
+						"type": "DatasetReference"
+					},
+					"name": "GetDimStore"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_dim_date",
+						"type": "DatasetReference"
+					},
+					"name": "GetDimDate"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_dim_prodcatsubcat",
+						"type": "DatasetReference"
+					},
+					"name": "GetDimProdCatSubCat"
 				}
 			],
 			"sinks": [],
@@ -28,7 +56,80 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> GetTransactions"
+				"     ignoreNoFilesFound: false) ~> GetCustTransactions",
+				"source(output(",
+				"          customer_key as integer,",
+				"          customer_Id as integer,",
+				"          customer_name as string,",
+				"          DOB as date,",
+				"          city_code as string,",
+				"          gender as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> GetDimCustomers",
+				"source(output(",
+				"          store_key as integer,",
+				"          store_type as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> GetDimStore",
+				"source(output(",
+				"          DateKey as integer,",
+				"          Date as date,",
+				"          FullDateUK as string,",
+				"          FullDateUSA as string,",
+				"          DayOfMonth as string,",
+				"          DaySuffix as string,",
+				"          DayName as string,",
+				"          DayOfWeekUSA as string,",
+				"          DayOfWeekUK as string,",
+				"          DayOfWeekInMonth as string,",
+				"          DayOfWeekInYear as string,",
+				"          DayOfQuarter as string,",
+				"          DayOfYear as string,",
+				"          WeekOfMonth as string,",
+				"          WeekOfQuarter as string,",
+				"          WeekOfYear as string,",
+				"          Month as string,",
+				"          MonthName as string,",
+				"          MonthOfQuarter as string,",
+				"          Quarter as string,",
+				"          QuarterName as string,",
+				"          Year as string,",
+				"          YearName as string,",
+				"          MonthYear as string,",
+				"          MMYYYY as string,",
+				"          FirstDayOfMonth as date,",
+				"          LastDayOfMonth as date,",
+				"          FirstDayOfQuarter as date,",
+				"          LastDayOfQuarter as date,",
+				"          FirstDayOfYear as date,",
+				"          LastDayOfYear as date,",
+				"          IsHolidayUSA as boolean,",
+				"          IsWeekday as boolean,",
+				"          HolidayUSA as string,",
+				"          IsHolidayUK as boolean,",
+				"          HolidayUK as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> GetDimDate",
+				"source(output(",
+				"          prod_cat_subcat_key as integer,",
+				"          product_cat_code as integer,",
+				"          product_category as string,",
+				"          product_subcat_code as integer,",
+				"          product_subcategory as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> GetDimProdCatSubCat"
 			]
 		}
 	}
