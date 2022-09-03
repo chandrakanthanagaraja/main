@@ -46,14 +46,31 @@
 				"AggActGetMaxDate derive(KeyColName = $dest_table_name) ~> DerivedKeyCol",
 				"AlterRowIfDateIsNotNull sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     input(",
+				"          source as string,",
+				"          source_table as string,",
+				"          dest_table as string,",
+				"          source_cols_for_staging as string,",
+				"          watermark_col as string,",
+				"          watermark_val as string,",
+				"          enabled as boolean,",
+				"          load_type as string,",
+				"          status as string,",
+				"          source_data_date_format as string",
+				"     ),",
 				"     deletable:false,",
 				"     insertable:false,",
 				"     updateable:true,",
 				"     upsertable:false,",
+				"     keys:['dest_table'],",
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> SinkUpdateWatermarkDt"
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          dest_table = KeyColName,",
+				"          watermark_val = Max_Date",
+				"     )) ~> SinkUpdateWatermarkDt"
 			]
 		}
 	}

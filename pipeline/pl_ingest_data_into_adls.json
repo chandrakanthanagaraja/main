@@ -202,6 +202,10 @@
 													"watermark_val_dt_fmt": {
 														"value": "@{item().source_data_date_format}",
 														"type": "Expression"
+													},
+													"dest_table_name": {
+														"value": "'@{item().dest_table}'",
+														"type": "Expression"
 													}
 												},
 												"datasetParameters": {
@@ -211,6 +215,14 @@
 													"SinkUpdateWatermarkDt": {
 														"edw_table_name": "@{item().dest_table}",
 														"edw_schema_name": "dbo"
+													}
+												},
+												"linkedServiceParameters": {
+													"SinkUpdateWatermarkDt": {
+														"schemaLinkedService": {
+															"edw_table_name": "cfg",
+															"edw_schema_name": "dbo"
+														}
 													}
 												}
 											},

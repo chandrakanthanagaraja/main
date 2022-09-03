@@ -17,7 +17,48 @@
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
-		"schema": [],
+		"schema": [
+			{
+				"name": "source",
+				"type": "nvarchar"
+			},
+			{
+				"name": "source_table",
+				"type": "varchar"
+			},
+			{
+				"name": "dest_table",
+				"type": "varchar"
+			},
+			{
+				"name": "source_cols_for_staging",
+				"type": "varchar"
+			},
+			{
+				"name": "watermark_col",
+				"type": "varchar"
+			},
+			{
+				"name": "watermark_val",
+				"type": "varchar"
+			},
+			{
+				"name": "enabled",
+				"type": "bit"
+			},
+			{
+				"name": "load_type",
+				"type": "varchar"
+			},
+			{
+				"name": "status",
+				"type": "varchar"
+			},
+			{
+				"name": "source_data_date_format",
+				"type": "varchar"
+			}
+		],
 		"typeProperties": {
 			"schema": {
 				"value": "@dataset().edw_schema_name",
