@@ -175,7 +175,7 @@
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> JoinDimStore",
-				"JoinDimStore derive(qty_Int = isInteger(qty),",
+				"JoinDimStore derive(qty_Int = toInteger(qty),",
 				"          rate_float = toFloat(rate),",
 				"          tax_float = toFloat(tax),",
 				"          total_amount_float = toFloat(total_amt)) ~> DerivedCols",
