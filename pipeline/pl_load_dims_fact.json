@@ -5,20 +5,7 @@
 			{
 				"name": "Load dim customer",
 				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "Copy prod cat subcat",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Data flow to load dim store",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -269,7 +256,26 @@
 			{
 				"name": "Data flow load fact table",
 				"type": "ExecuteDataFlow",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Load dim customer",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Copy prod cat subcat",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Data flow to load dim store",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -283,7 +289,7 @@
 						"referenceName": "DataFlowLoadFactActivities",
 						"type": "DataFlowReference",
 						"datasetParameters": {
-							"GetTransactions": {
+							"GetCustTransactions": {
 								"stage_file_name": "cust_transaction.csv"
 							}
 						}
