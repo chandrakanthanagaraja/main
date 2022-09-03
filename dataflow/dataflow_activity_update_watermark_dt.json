@@ -42,7 +42,7 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> LoadDataFromCSV",
 				"LoadDataFromCSV aggregate(Max_Date = max(toTimestamp(toString(byName($watermark_col_name)), toString($watermark_val_dt_fmt)))) ~> AggActGetMaxDate",
-				"DerivedKeyCol alterRow(updateIf(isNull(Max_Date) == false())) ~> AlterRowIfDateIsNotNull",
+				"DerivedKeyCol alterRow(updateIf(isNull(Max_Date)==false())) ~> AlterRowIfDateIsNotNull",
 				"AggActGetMaxDate derive(KeyColName = $dest_table_name) ~> DerivedKeyCol",
 				"AlterRowIfDateIsNotNull sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
