@@ -1,0 +1,43 @@
+{
+	"name": "ds_dim_customer",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azure_sql_server",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "customer_key",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "customer_Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "customer_name",
+				"type": "varchar"
+			},
+			{
+				"name": "DOB",
+				"type": "date"
+			},
+			{
+				"name": "city_code",
+				"type": "varchar"
+			},
+			{
+				"name": "gender",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "dim_customer"
+		}
+	}
+}
