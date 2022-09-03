@@ -19,13 +19,21 @@
 					"name": "DimStore"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_dim_store",
+						"type": "DatasetReference"
+					},
+					"name": "SinkInsertDimStore"
+				}
+			],
 			"transformations": [
 				{
 					"name": "DistinctStores"
 				},
 				{
-					"name": "JoinDistinctStoreDimStore"
+					"name": "NonExistsStores"
 				}
 			],
 			"scriptLines": [
@@ -53,11 +61,26 @@
 				"     format: 'table') ~> DimStore",
 				"LoadTransactionCSV aggregate(groupBy(store_type),",
 				"     count = count(1)) ~> DistinctStores",
-				"DistinctStores, DimStore join(DistinctStores@store_type == DimStore@store_type,",
-				"     joinType:'left',",
-				"     matchType:'exact',",
-				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> JoinDistinctStoreDimStore"
+				"DistinctStores, DimStore exists(DistinctStores@store_type == DimStore@store_type,",
+				"     negate:true,",
+				"     broadcast: 'auto')~> NonExistsStores",
+				"NonExistsStores sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          store_key as integer,",
+				"          store_type as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          store_type",
+				"     )) ~> SinkInsertDimStore"
 			]
 		}
 	}
