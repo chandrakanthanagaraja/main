@@ -12,21 +12,48 @@
 					"name": "LoadDataFromCSV"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_azure_edwdb",
+						"type": "DatasetReference"
+					},
+					"name": "SinkUpdateWatermarkDt"
+				}
+			],
 			"transformations": [
 				{
 					"name": "AggActGetMaxDate"
+				},
+				{
+					"name": "AlterRowIfDateIsNotNull"
+				},
+				{
+					"name": "DerivedKeyCol"
 				}
 			],
 			"scriptLines": [
 				"parameters{",
 				"     watermark_col_name as string,",
-				"     watermark_val_dt_fmt as string",
+				"     watermark_val_dt_fmt as string,",
+				"     dest_table_name as string",
 				"}",
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> LoadDataFromCSV",
-				"LoadDataFromCSV aggregate(Max_Date = max(toTimestamp(toString(byName($watermark_col_name)), toString($watermark_val_dt_fmt)))) ~> AggActGetMaxDate"
+				"LoadDataFromCSV aggregate(Max_Date = max(toTimestamp(toString(byName($watermark_col_name)), toString($watermark_val_dt_fmt)))) ~> AggActGetMaxDate",
+				"DerivedKeyCol alterRow(updateIf(isNull(Max_Date) == false())) ~> AlterRowIfDateIsNotNull",
+				"AggActGetMaxDate derive(KeyColName = $dest_table_name) ~> DerivedKeyCol",
+				"AlterRowIfDateIsNotNull sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:false,",
+				"     updateable:true,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> SinkUpdateWatermarkDt"
 			]
 		}
 	}
