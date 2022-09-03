@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "DataFlowActivies",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -10,14 +10,34 @@
 						"type": "DatasetReference"
 					},
 					"name": "LoadTransactionCSV"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_dim_store",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "aggregate1"
+				}
+			],
 			"scriptLines": [
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> LoadTransactionCSV"
+				"     ignoreNoFilesFound: false) ~> LoadTransactionCSV",
+				"source(output(",
+				"          store_key as integer,",
+				"          store_type as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source1",
+				"LoadTransactionCSV aggregate() ~> aggregate1"
 			]
 		}
 	}
