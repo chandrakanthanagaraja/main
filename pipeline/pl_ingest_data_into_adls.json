@@ -216,14 +216,6 @@
 														"edw_table_name": "@{item().dest_table}",
 														"edw_schema_name": "dbo"
 													}
-												},
-												"linkedServiceParameters": {
-													"SinkUpdateWatermarkDt": {
-														"schemaLinkedService": {
-															"edw_table_name": "cfg",
-															"edw_schema_name": "dbo"
-														}
-													}
 												}
 											},
 											"compute": {
