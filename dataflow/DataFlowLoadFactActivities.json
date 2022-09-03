@@ -47,6 +47,12 @@
 				},
 				{
 					"name": "JoinDimProdCatSubCat"
+				},
+				{
+					"name": "JoinDimDate"
+				},
+				{
+					"name": "JoinDimStore"
 				}
 			],
 			"scriptLines": [
@@ -147,7 +153,17 @@
 				"     joinType:'left',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> JoinDimProdCatSubCat"
+				"     broadcast: 'auto')~> JoinDimProdCatSubCat",
+				"JoinDimProdCatSubCat, GetDimDate join(toDate(tran_date, 'MM/dd/yyyy', 'en-US') == Date,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> JoinDimDate",
+				"JoinDimDate, GetDimStore join(GetCustTransactions@store_type == GetDimStore@store_type,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> JoinDimStore"
 			]
 		}
 	}
