@@ -122,7 +122,14 @@
 			{
 				"name": "Data flow to load dim store",
 				"type": "ExecuteDataFlow",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Copy prod cat subcat",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -151,7 +158,14 @@
 			{
 				"name": "Copy prod cat subcat",
 				"type": "Copy",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Load dim customer",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -257,18 +271,6 @@
 				"name": "Data flow load fact table",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
-					{
-						"activity": "Load dim customer",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Copy prod cat subcat",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
 					{
 						"activity": "Data flow to load dim store",
 						"dependencyConditions": [
