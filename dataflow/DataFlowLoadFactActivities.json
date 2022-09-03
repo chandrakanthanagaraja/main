@@ -53,6 +53,9 @@
 				},
 				{
 					"name": "JoinDimStore"
+				},
+				{
+					"name": "DerivedCols"
 				}
 			],
 			"scriptLines": [
@@ -163,7 +166,11 @@
 				"     joinType:'inner',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> JoinDimStore"
+				"     broadcast: 'auto')~> JoinDimStore",
+				"JoinDimStore derive(qty_Int = isInteger(qty),",
+				"          rate_float = toFloat(rate),",
+				"          tax_float = toFloat(tax),",
+				"          total_amount_float = toFloat(total_amt)) ~> DerivedCols"
 			]
 		}
 	}
