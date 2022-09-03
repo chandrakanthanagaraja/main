@@ -7,8 +7,7 @@
 		},
 		"parameters": {
 			"stage_file_name": {
-				"type": "string",
-				"defaultValue": "customer.csv"
+				"type": "string"
 			}
 		},
 		"annotations": [],
