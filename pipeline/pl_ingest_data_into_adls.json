@@ -209,11 +209,11 @@
 													}
 												},
 												"datasetParameters": {
-													"LoadDataFromCSV": {
+													"GetDataFromCSV": {
 														"stage_file_name": "@{item().dest_table}"
 													},
 													"SinkUpdateWatermarkDt": {
-														"edw_table_name": "@{item().dest_table}",
+														"edw_table_name": "cfg",
 														"edw_schema_name": "dbo"
 													}
 												}
