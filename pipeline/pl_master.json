@@ -1,0 +1,41 @@
+{
+	"name": "pl_master",
+	"properties": {
+		"activities": [
+			{
+				"name": "Execute pl_ingest_data_into_adls",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_ingest_data_into_adls",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Execute pl_load_dims_fact",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Execute pl_ingest_data_into_adls",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_load_dims_fact",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"annotations": []
+	}
+}
