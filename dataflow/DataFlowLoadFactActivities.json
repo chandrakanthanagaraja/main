@@ -41,7 +41,11 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "JoinCustTransDimCustomer"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          cust_id as string,",
@@ -129,7 +133,12 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> GetDimProdCatSubCat"
+				"     format: 'table') ~> GetDimProdCatSubCat",
+				"GetCustTransactions, GetDimCustomers join(toInteger(cust_id) == customer_Id,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> JoinCustTransDimCustomer"
 			]
 		}
 	}
