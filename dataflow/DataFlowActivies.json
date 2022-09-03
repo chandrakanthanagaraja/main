@@ -16,13 +16,16 @@
 						"referenceName": "ds_dim_store",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "DimStore"
 				}
 			],
 			"sinks": [],
 			"transformations": [
 				{
 					"name": "DistinctStores"
+				},
+				{
+					"name": "JoinDistinctStoreDimStore"
 				}
 			],
 			"scriptLines": [
@@ -47,8 +50,14 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> source1",
-				"LoadTransactionCSV aggregate() ~> DistinctStores"
+				"     format: 'table') ~> DimStore",
+				"LoadTransactionCSV aggregate(groupBy(store_type),",
+				"     count = count(1)) ~> DistinctStores",
+				"DistinctStores, DimStore join(DistinctStores@store_type == DimStore@store_type,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> JoinDistinctStoreDimStore"
 			]
 		}
 	}
