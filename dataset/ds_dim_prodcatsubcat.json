@@ -1,0 +1,40 @@
+{
+	"name": "ds_dim_prodcatsubcat",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azure_sql_server",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "prod_cat_subcat_key",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "product_cat_code",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "product_category",
+				"type": "varchar"
+			},
+			{
+				"name": "product_subcat_code",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "product_subcategory",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "dim_product_cat_subcat"
+		}
+	}
+}
