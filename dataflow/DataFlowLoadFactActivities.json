@@ -1,0 +1,35 @@
+{
+	"name": "DataFlowLoadFactActivities",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_storageacct_stage",
+						"type": "DatasetReference"
+					},
+					"name": "GetTransactions"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          cust_id as string,",
+				"          prod_subcat_code as string,",
+				"          prod_cat_code as string,",
+				"          qty as string,",
+				"          rate as string,",
+				"          tax as string,",
+				"          total_amt as string,",
+				"          store_type as string,",
+				"          tran_date as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> GetTransactions"
+			]
+		}
+	}
+}
