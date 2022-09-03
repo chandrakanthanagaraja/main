@@ -27,6 +27,43 @@
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": []
+		"schema": [
+			{
+				"name": "cust_id",
+				"type": "String"
+			},
+			{
+				"name": "prod_subcat_code",
+				"type": "String"
+			},
+			{
+				"name": "prod_cat_code",
+				"type": "String"
+			},
+			{
+				"name": "qty",
+				"type": "String"
+			},
+			{
+				"name": "rate",
+				"type": "String"
+			},
+			{
+				"name": "tax",
+				"type": "String"
+			},
+			{
+				"name": "total_amt",
+				"type": "String"
+			},
+			{
+				"name": "store_type",
+				"type": "String"
+			},
+			{
+				"name": "tran_date",
+				"type": "String"
+			}
+		]
 	}
 }

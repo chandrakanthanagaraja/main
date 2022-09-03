@@ -71,11 +71,11 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow1",
+						"referenceName": "DataFlowActivies",
 						"type": "DataFlowReference",
 						"datasetParameters": {
 							"LoadTransactionCSV": {
-								"stage_file_name": "transaction.csv"
+								"stage_file_name": "cust_transaction.csv"
 							}
 						}
 					},
