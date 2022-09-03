@@ -1,0 +1,26 @@
+{
+	"name": "ds_dim_store",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azure_sql_server",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "store_key",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "store_type",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "dim_store"
+		}
+	}
+}
