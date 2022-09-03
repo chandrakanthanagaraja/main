@@ -58,51 +58,8 @@
 				]
 			},
 			{
-				"name": "Load dim store",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "Get distinct store from transaction csv",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "AzureBlobFSReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
-					},
-					"enableStaging": false
-				},
-				"inputs": [
-					{
-						"referenceName": "ds_storageacct_stage",
-						"type": "DatasetReference",
-						"parameters": {
-							"stage_file_name": "transaction.csv"
-						}
-					}
-				]
-			},
-			{
-				"name": "Get distinct store from transaction csv",
-				"type": "Lookup",
+				"name": "Data flow to load dim store",
+				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -113,24 +70,11 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "AzureBlobFSReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
 					},
-					"dataset": {
-						"referenceName": "ds_storageacct_stage",
-						"type": "DatasetReference",
-						"parameters": {
-							"stage_file_name": "transaction.csv"
-						}
-					}
+					"traceLevel": "Fine"
 				}
 			}
 		],
