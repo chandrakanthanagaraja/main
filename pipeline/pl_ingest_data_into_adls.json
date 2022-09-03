@@ -230,6 +230,26 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "ForEachLoadFromNonSQLSource",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Filter for non sqldb records",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Filter for non sqldb records').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true
+				}
 			}
 		],
 		"annotations": []
