@@ -40,7 +40,15 @@
 					"name": "GetDimProdCatSubCat"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_fact_transaction",
+						"type": "DatasetReference"
+					},
+					"name": "SinkCustTransaction"
+				}
+			],
 			"transformations": [
 				{
 					"name": "JoinCustTransDimCustomer"
@@ -170,7 +178,38 @@
 				"JoinDimStore derive(qty_Int = isInteger(qty),",
 				"          rate_float = toFloat(rate),",
 				"          tax_float = toFloat(tax),",
-				"          total_amount_float = toFloat(total_amt)) ~> DerivedCols"
+				"          total_amount_float = toFloat(total_amt)) ~> DerivedCols",
+				"DerivedCols sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          fact_tran_key as integer,",
+				"          customer_key as integer,",
+				"          prod_cat_subcat_key as integer,",
+				"          store_key as integer,",
+				"          tran_date as integer,",
+				"          quantity as integer,",
+				"          rate as double,",
+				"          tax as double,",
+				"          total_amount as double",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          customer_key,",
+				"          prod_cat_subcat_key,",
+				"          store_key,",
+				"          tran_date = DateKey,",
+				"          quantity = qty_Int,",
+				"          rate = rate_float,",
+				"          tax = tax_float,",
+				"          total_amount = total_amount_float",
+				"     )) ~> SinkCustTransaction"
 			]
 		}
 	}
